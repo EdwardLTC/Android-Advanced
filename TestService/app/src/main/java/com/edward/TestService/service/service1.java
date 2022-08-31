@@ -1,6 +1,6 @@
-package com.edward.test1.service;
+package com.edward.TestService.service;
 
-import static com.edward.test1.MainActivity.CHANNEL_ID;
+import static com.edward.TestService.MainActivity.CHANNEL_ID;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;

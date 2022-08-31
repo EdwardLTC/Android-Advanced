@@ -1,4 +1,4 @@
-package com.edward.test1;
+package com.edward.TestService;
 
 import org.junit.Test;
 
