@@ -9,8 +9,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.EditText;
 
+import com.edward.TestService.modal.song;
 import com.edward.TestService.service.service1;
-import com.edward.test1.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,8 +27,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, service1.class);
 
         findViewById(R.id.clickStart).setOnClickListener(view -> {
-
-            intent.putExtra("key_Data_intent",text.getText().toString().trim());
+            song Song = new song("hahahhaha","Edward",R.drawable.ic_launcher_foreground,R.raw.music);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("object",Song);
+            intent.putExtras(bundle);
             startService(intent);
         });
 
@@ -41,10 +43,13 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Channel Service",
                     NotificationManager.IMPORTANCE_DEFAULT);
-
+            channel.setSound(null,null);
             NotificationManager manager = getSystemService(NotificationManager.class);
 
-            manager.createNotificationChannel(channel);
+            if (manager != null) {
+                manager.createNotificationChannel(channel);
+            }
+
         }
     }
 }
