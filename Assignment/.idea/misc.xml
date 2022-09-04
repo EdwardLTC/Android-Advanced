@@ -3,16 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Android Advanced/Android-Advanced/Assignment/app/src/main/res/layout/activity_main.xml" value="0.27807971014492755" />
-        <entry key="..\:/Android Advanced/Android-Advanced/Assignment/app/src/main/res/layout/app_bar_main.xml" value="0.27807971014492755" />
-        <entry key="..\:/Android Advanced/Android-Advanced/Assignment/app/src/main/res/layout/content_main.xml" value="0.25" />
-        <entry key="..\:/Android Advanced/Android-Advanced/Assignment/app/src/main/res/layout/fragment_course.xml" value="0.27807971014492755" />
-        <entry key="..\:/Android Advanced/Android-Advanced/Assignment/app/src/main/res/layout/fragment_maps.xml" value="0.27807971014492755" />
-        <entry key="..\:/Android Advanced/Android-Advanced/Assignment/app/src/main/res/layout/fragment_news.xml" value="0.27807971014492755" />
-        <entry key="..\:/Android Advanced/Android-Advanced/Assignment/app/src/main/res/layout/fragment_social.xml" value="0.27807971014492755" />
-        <entry key="..\:/Android Advanced/Android-Advanced/Assignment/app/src/main/res/menu/activity_main_drawer.xml" value="0.303125" />
-        <entry key="..\:/Android Advanced/Android-Advanced/Assignment/app/src/main/res/menu/main.xml" value="0.303125" />
-        <entry key="..\:/Android Advanced/Android-Advanced/Assignment/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.158" />
+        <entry key="..\:/Android Advanced/Android-Advanced/MyApplication/app/src/main/res/layout/activity_main.xml" value="0.27807971014492755" />
+        <entry key="..\:/Android Advanced/Android-Advanced/MyApplication/app/src/main/res/layout/app_bar_main.xml" value="0.27807971014492755" />
+        <entry key="..\:/Android Advanced/Android-Advanced/MyApplication/app/src/main/res/layout/content_main.xml" value="0.1405775075987842" />
+        <entry key="..\:/Android Advanced/Android-Advanced/MyApplication/app/src/main/res/layout/fragment_course.xml" value="0.27807971014492755" />
+        <entry key="..\:/Android Advanced/Android-Advanced/MyApplication/app/src/main/res/layout/fragment_gallery.xml" value="0.27807971014492755" />
+        <entry key="..\:/Android Advanced/Android-Advanced/MyApplication/app/src/main/res/layout/fragment_maps.xml" value="0.27807971014492755" />
+        <entry key="..\:/Android Advanced/Android-Advanced/MyApplication/app/src/main/res/layout/fragment_news.xml" value="0.27807971014492755" />
+        <entry key="..\:/Android Advanced/Android-Advanced/MyApplication/app/src/main/res/layout/fragment_social.xml" value="0.27807971014492755" />
+        <entry key="..\:/Android Advanced/Android-Advanced/MyApplication/app/src/main/res/menu/activity_main_drawer.xml" value="0.303125" />
       </map>
     </option>
   </component>

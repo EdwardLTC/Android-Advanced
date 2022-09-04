@@ -1,4 +1,4 @@
-package com.edward.assignment;
+package com.edward.myapplication;
 
 import org.junit.Test;
 

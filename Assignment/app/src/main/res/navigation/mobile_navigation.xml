@@ -7,24 +7,24 @@
 
     <fragment
         android:id="@+id/nav_course"
-        android:name="com.edward.assignment.ui.course.CourseFragment"
-        android:label="Course"
+        android:name="com.edward.myapplication.ui.course.CourseFragment"
+        android:label="fragment_course"
         tools:layout="@layout/fragment_course" />
 
     <fragment
         android:id="@+id/nav_maps"
-        android:name="com.edward.assignment.ui.maps.MapsFragment"
-        android:label="Maps"
+        android:name="com.edward.myapplication.ui.maps.MapsFragment"
+        android:label="fragment_maps"
         tools:layout="@layout/fragment_maps" />
-
     <fragment
         android:id="@+id/nav_news"
-        android:name="com.edward.assignment.ui.news.NewsFragment"
-        android:label="News"
+        android:name="com.edward.myapplication.ui.news.NewsFragment"
+        android:label="fragment_news"
         tools:layout="@layout/fragment_news" />
     <fragment
         android:id="@+id/nav_social"
-        android:name="com.edward.assignment.ui.news.NewsFragment"
-        android:label="Social"
-        tools:layout="@layout/fragment_news" />
+        android:name="com.edward.myapplication.ui.social.SocialFragment"
+        android:label="fragment_social"
+        tools:layout="@layout/fragment_social" />
+
 </navigation>
