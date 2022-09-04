@@ -8,17 +8,14 @@ import android.view.View;
 import android.view.Menu;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.edward.assignment.ui.course.CourseFragment;
 import com.edward.assignment.ui.maps.MapsFragment;
 import com.edward.assignment.ui.news.NewsFragment;
 import com.edward.assignment.ui.social.SocialFragment;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
@@ -35,7 +32,6 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private ActivityMainBinding binding;
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private View view;
@@ -49,12 +45,13 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+
         if (savedInstanceState == null) { //default fragment
             getSupportFragmentManager().
-                    beginTransaction().replace(R.id.nav_host_fragment_content_main, new CourseFragment()).commit();
+                    beginTransaction().replace(R.id.nav_host_fragment_content_main, new CourseFragment()).addToBackStack(null).commit();
         }
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        com.edward.assignment.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         navigationView = binding.navView;
         navigationView.getMenu().getItem(0).setChecked(true);
@@ -79,13 +76,12 @@ public class MainActivity extends AppCompatActivity {
                 .setOpenableLayout(drawer)
                 .build();
 
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-//        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
 
         navigationView.setNavigationItemSelectedListener(item -> {
             onSectionAttached(item);
             return true;
         });
+
 
     }
 
@@ -130,7 +126,9 @@ public class MainActivity extends AppCompatActivity {
         }
         fragmentTransaction.replace(R.id.nav_host_fragment_content_main, Objects.requireNonNull(fragment), null);
         fragmentTransaction.setReorderingAllowed(true);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+
         drawer.closeDrawers();
     }
 

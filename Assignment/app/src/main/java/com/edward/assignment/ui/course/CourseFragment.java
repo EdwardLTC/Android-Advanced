@@ -1,15 +1,13 @@
 package com.edward.assignment.ui.course;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.edward.assignment.databinding.FragmentCourseBinding;
 
@@ -24,12 +22,14 @@ public class CourseFragment extends Fragment {
         View root = binding.getRoot();
 
         binding.textview.setText("Frag 1");
+        Toast.makeText(getContext(), "create", Toast.LENGTH_SHORT).show();
         return root;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Toast.makeText(getContext(), "destroy", Toast.LENGTH_SHORT).show();
         binding = null;
     }
 }

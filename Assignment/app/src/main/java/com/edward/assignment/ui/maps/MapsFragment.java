@@ -24,14 +24,12 @@ public class MapsFragment extends Fragment {
         View root = binding.getRoot();
 
         binding.textview.setText("Frag 2");
-        Toast.makeText(getContext(), "create", Toast.LENGTH_SHORT).show();
         return root;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Toast.makeText(getContext(), "destroy", Toast.LENGTH_SHORT).show();
         binding = null;
     }
 }
