@@ -1,6 +1,5 @@
 package com.edward.myapplication.ui.social;
 
-import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 
@@ -12,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.edward.myapplication.R;
-import com.edward.myapplication.databinding.FragmentSlideshowBinding;
 import com.edward.myapplication.databinding.FragmentSocialBinding;
 
 public class SocialFragment extends Fragment {

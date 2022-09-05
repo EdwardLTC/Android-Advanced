@@ -13,26 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.edward.myapplication.R;
+import com.edward.myapplication.databinding.FragmentMapsBinding;
 
 public class MapsFragment extends Fragment {
 
-    private MapsViewModel mViewModel;
-
-    public static MapsFragment newInstance() {
-        return new MapsFragment();
-    }
-
+    private FragmentMapsBinding binding;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_maps, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(MapsViewModel.class);
-        // TODO: Use the ViewModel
+        binding = FragmentMapsBinding.inflate(inflater,container,false);
+        View root = binding.getRoot();
+        return root;
     }
 
 }

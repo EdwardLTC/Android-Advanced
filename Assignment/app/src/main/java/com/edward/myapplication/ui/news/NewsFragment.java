@@ -13,26 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.edward.myapplication.R;
+import com.edward.myapplication.databinding.FragmentNewsBinding;
 
 public class NewsFragment extends Fragment {
 
-    private NewsViewModel mViewModel;
-
-    public static NewsFragment newInstance() {
-        return new NewsFragment();
-    }
-
+    private FragmentNewsBinding binding;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_news, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(NewsViewModel.class);
-        // TODO: Use the ViewModel
+        binding = FragmentNewsBinding.inflate(inflater,container,false);
+        View root = binding.getRoot();
+        return root;
     }
 
 }
