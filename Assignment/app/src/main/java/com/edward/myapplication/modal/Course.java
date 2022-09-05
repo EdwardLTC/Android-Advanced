@@ -1,8 +1,10 @@
 package com.edward.myapplication.modal;
 
-import android.content.Intent;
 
-public class Course {
+import java.io.Serializable;
+
+public class Course implements Serializable {
+    // TODO: 9/5/2022
     private int _ID;
     private String _Name;
     private String _Schedule;

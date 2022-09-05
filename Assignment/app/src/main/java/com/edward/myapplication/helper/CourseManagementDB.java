@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class CourseManagementDB extends SQLiteOpenHelper {
-
+    // TODO: 9/5/2022
     private static final String DATABASE_NAME = "CourseManagement";
     private static final int DATABASE_VERSION = 1;
 
@@ -22,8 +22,8 @@ public class CourseManagementDB extends SQLiteOpenHelper {
     private static final String KEY_COURSE_SCHEDULE = "course_schedule";
     private static final String KEY_COURSE_TESTSCHEDULE = "user_test_schedule";
 
-    private static final String TABLE_REGISINFO ="RegisInfo";
-    private static final String KEY_REGIST_ID ="id";
+    private static final String TABLE_REGISINFO = "RegisInfo";
+    private static final String KEY_REGIST_ID = "id";
 
     public CourseManagementDB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -38,8 +38,7 @@ public class CourseManagementDB extends SQLiteOpenHelper {
                 KEY_USER_NAME + " TEXT, " +
                 KEY_USER_DATEOFBIRTH + " TEXT, " +
                 KEY_USER_ADDRESS + " TEXT, " +
-                KEY_USER_PHONENUM + " TEXT, " +
-                "FOREIGN  KEY (" + KEY_USER_ID + ") REFERENCES "+TABLE_REGISINFO+" (" + KEY_USER_ID + ") ON DELETE CASCADE" +
+                KEY_USER_PHONENUM + " TEXT " +
                 ")";
 
         sqLiteDatabase.execSQL(sqlUser);
@@ -50,8 +49,7 @@ public class CourseManagementDB extends SQLiteOpenHelper {
                 KEY_COURSE_ID + " INTEGER primary key, " +
                 KEY_COURSE_NAME + " TEXT, " +
                 KEY_COURSE_SCHEDULE + " TEXT, " +
-                KEY_COURSE_TESTSCHEDULE + " TEXT, " +
-                "FOREIGN  KEY (" + KEY_COURSE_ID + ") REFERENCES "+TABLE_REGISINFO+" (" + KEY_COURSE_ID + ") ON DELETE CASCADE" +
+                KEY_COURSE_TESTSCHEDULE + " TEXT " +
                 ")";
 
         sqLiteDatabase.execSQL(sqlCourse);
@@ -61,13 +59,15 @@ public class CourseManagementDB extends SQLiteOpenHelper {
                 "(" +
                 KEY_REGIST_ID + " INTEGER primary key autoincrement, " +
                 KEY_USER_ID + " TEXT, " +
-                KEY_COURSE_ID + " INTEGER " +
+                KEY_COURSE_ID + " INTEGER, " +
+                "FOREIGN  KEY (" + KEY_COURSE_ID + ") REFERENCES " + TABLE_COURSE + " (" + KEY_COURSE_ID + ") ON DELETE CASCADE," +
+                "FOREIGN  KEY (" + KEY_USER_ID + ") REFERENCES " + TABLE_USER + " (" + KEY_USER_ID + ") ON DELETE CASCADE " +
                 ")";
         sqLiteDatabase.execSQL(sqlRegist);
 
-        String tempData ="INSERT INTO " + TABLE_COURSE +
-                " VALUES ('1','Android','case 2','22/4'),"+
-                "('2','Android 2','case 2','22/4'),"+
+        String tempData = "INSERT INTO " + TABLE_COURSE +
+                " VALUES ('1','Android','case 2','22/4')," +
+                "('2','Android 2','case 2','22/4')," +
                 "('3','Android 3','case 2','22/4')";
         sqLiteDatabase.execSQL(tempData);
     }

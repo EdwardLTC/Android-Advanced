@@ -1,6 +1,9 @@
 package com.edward.myapplication.modal;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
+    // TODO: 9/5/2022
     private String _ID;
     private String _FullName;
     private String _DateOfBirth;
@@ -55,5 +58,14 @@ public class User {
         this._PhoneNum = _PhoneNum;
     }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "_ID='" + _ID + '\'' +
+                ", _FullName='" + _FullName + '\'' +
+                ", _DateOfBirth='" + _DateOfBirth + '\'' +
+                ", _Address='" + _Address + '\'' +
+                ", _PhoneNum='" + _PhoneNum + '\'' +
+                '}';
+    }
 }

@@ -1,5 +1,6 @@
 package com.edward.myapplication.dao;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,6 +12,7 @@ import com.edward.myapplication.modal.User;
 import java.util.ArrayList;
 
 public class DataAccsesObject extends CourseManagementDB {
+    // TODO: 9/5/2022
     private static CourseManagementDB courseManagementDB;
     private static final String TABLE_USER = "user";
     private static final String KEY_USER_ID = "user_id";
@@ -63,9 +65,17 @@ public class DataAccsesObject extends CourseManagementDB {
         return list;
     }
 
-    public void handleUnRegistCourse(String m_userID, int m_courseID){
+    public void handleUnRegisterCourse(String m_userID, int m_courseID){
         SQLiteDatabase sqLiteDatabase = courseManagementDB.getWritableDatabase();
-        sqLiteDatabase.delete(TABLE_REGISINFO,KEY_USER_DATEOFBIRTH + " = ? and " +KEY_COURSE_ID +" = ?",new String[]{m_userID,String.valueOf(m_courseID)});
+        sqLiteDatabase.delete(TABLE_REGISINFO,KEY_USER_ID + " = ? and " +KEY_COURSE_ID +" = ?",new String[]{m_userID,String.valueOf(m_courseID)});
+    }
+
+    public void handleRegisterCourse(String m_userID, int m_courseID){
+        SQLiteDatabase sqLiteDatabase = courseManagementDB.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_USER_ID, m_userID);
+        contentValues.put(KEY_COURSE_ID,m_courseID);
+        sqLiteDatabase.insert(TABLE_REGISINFO,null,contentValues);
     }
 
     //admin role

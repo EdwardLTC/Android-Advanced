@@ -8,9 +8,13 @@
     tools:context=".ui.course.CourseFragment">
 
     <LinearLayout
+        android:padding="12dp"
+        android:id="@+id/regis"
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:layout_height="80dp">
+        android:background="#32C7D1"
+        android:layout_height="80dp"
+        >
         <ImageView
             android:layout_gravity="center"
             android:src="@drawable/list"
@@ -26,6 +30,9 @@
     </LinearLayout>
 
     <LinearLayout
+        android:padding="12dp"
+        android:background="#32C7D1"
+        android:id="@+id/courseRegistered"
         android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:orientation="horizontal"
