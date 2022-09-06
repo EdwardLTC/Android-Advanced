@@ -1,29 +1,27 @@
 package com.edward.myapplication.helper;
 
+import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_COURSE_ID;
+import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_COURSE_NAME;
+import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_COURSE_SCHEDULE;
+import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_COURSE_TESTSCHEDULE;
+import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_REGISTER_ID;
+import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_USER_ADDRESS;
+import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_USER_DATEOFBIRTH;
+import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_USER_ID;
+import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_USER_NAME;
+import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_USER_PHONENUM;
+import static com.edward.myapplication.config.CONFIG.DATABASE_NAME;
+import static com.edward.myapplication.config.CONFIG.DATABASE_TABLE_COURSE;
+import static com.edward.myapplication.config.CONFIG.DATABASE_TABLE_REGISINFO;
+import static com.edward.myapplication.config.CONFIG.DATABASE_TABLE_USER;
+import static com.edward.myapplication.config.CONFIG.DATABASE_VERSION;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class CourseManagementDB extends SQLiteOpenHelper {
     // TODO: 9/5/2022
-    private static final String DATABASE_NAME = "CourseManagement";
-    private static final int DATABASE_VERSION = 1;
-
-    private static final String TABLE_USER = "user";
-    private static final String KEY_USER_ID = "user_id";
-    private static final String KEY_USER_NAME = "user_full_name";
-    private static final String KEY_USER_DATEOFBIRTH = "user_date_of_birth";
-    private static final String KEY_USER_ADDRESS = "user_address";
-    private static final String KEY_USER_PHONENUM = "user_phone_number";
-
-    private static final String TABLE_COURSE = "course";
-    private static final String KEY_COURSE_ID = "course_id";
-    private static final String KEY_COURSE_NAME = "course_name";
-    private static final String KEY_COURSE_SCHEDULE = "course_schedule";
-    private static final String KEY_COURSE_TESTSCHEDULE = "user_test_schedule";
-
-    private static final String TABLE_REGISINFO = "RegisInfo";
-    private static final String KEY_REGIST_ID = "id";
 
     public CourseManagementDB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -32,40 +30,40 @@ public class CourseManagementDB extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         //user table
-        String sqlUser = "CREATE TABLE " + TABLE_USER +
+        String sqlUser = "CREATE TABLE " + DATABASE_TABLE_USER +
                 "( " +
-                KEY_USER_ID + " TEXT primary key, " +
-                KEY_USER_NAME + " TEXT, " +
-                KEY_USER_DATEOFBIRTH + " TEXT, " +
-                KEY_USER_ADDRESS + " TEXT, " +
-                KEY_USER_PHONENUM + " TEXT " +
+                DATABASE_KEY_USER_ID + " TEXT primary key, " +
+                DATABASE_KEY_USER_NAME + " TEXT, " +
+                DATABASE_KEY_USER_DATEOFBIRTH + " TEXT, " +
+                DATABASE_KEY_USER_ADDRESS + " TEXT, " +
+                DATABASE_KEY_USER_PHONENUM + " TEXT " +
                 ")";
 
         sqLiteDatabase.execSQL(sqlUser);
 
         //course table
-        String sqlCourse = " CREATE TABLE " + TABLE_COURSE +
+        String sqlCourse = " CREATE TABLE " + DATABASE_TABLE_COURSE +
                 "(" +
-                KEY_COURSE_ID + " INTEGER primary key, " +
-                KEY_COURSE_NAME + " TEXT, " +
-                KEY_COURSE_SCHEDULE + " TEXT, " +
-                KEY_COURSE_TESTSCHEDULE + " TEXT " +
+                DATABASE_KEY_COURSE_ID + " INTEGER primary key, " +
+                DATABASE_KEY_COURSE_NAME + " TEXT, " +
+                DATABASE_KEY_COURSE_SCHEDULE + " TEXT, " +
+                DATABASE_KEY_COURSE_TESTSCHEDULE + " TEXT " +
                 ")";
 
         sqLiteDatabase.execSQL(sqlCourse);
 
         //regis info table
-        String sqlRegist = " CREATE TABLE " + TABLE_REGISINFO +
+        String sqlRegister = " CREATE TABLE " + DATABASE_TABLE_REGISINFO +
                 "(" +
-                KEY_REGIST_ID + " INTEGER primary key autoincrement, " +
-                KEY_USER_ID + " TEXT, " +
-                KEY_COURSE_ID + " INTEGER, " +
-                "FOREIGN  KEY (" + KEY_COURSE_ID + ") REFERENCES " + TABLE_COURSE + " (" + KEY_COURSE_ID + ") ON DELETE CASCADE," +
-                "FOREIGN  KEY (" + KEY_USER_ID + ") REFERENCES " + TABLE_USER + " (" + KEY_USER_ID + ") ON DELETE CASCADE " +
+                DATABASE_KEY_REGISTER_ID + " INTEGER primary key autoincrement, " +
+                DATABASE_KEY_USER_ID + " TEXT, " +
+                DATABASE_KEY_COURSE_ID + " INTEGER, " +
+                "FOREIGN  KEY (" + DATABASE_KEY_COURSE_ID + ") REFERENCES " + DATABASE_TABLE_COURSE + " (" + DATABASE_KEY_COURSE_ID + ") ON DELETE CASCADE," +
+                "FOREIGN  KEY (" + DATABASE_KEY_USER_ID + ") REFERENCES " + DATABASE_TABLE_USER + " (" + DATABASE_KEY_USER_ID + ") ON DELETE CASCADE " +
                 ")";
-        sqLiteDatabase.execSQL(sqlRegist);
+        sqLiteDatabase.execSQL(sqlRegister);
 
-        String tempData = "INSERT INTO " + TABLE_COURSE +
+        String tempData = "INSERT INTO " + DATABASE_TABLE_COURSE +
                 " VALUES ('1','Android','case 2','22/4')," +
                 "('2','Android 2','case 2','22/4')," +
                 "('3','Android 3','case 2','22/4')";
@@ -74,9 +72,9 @@ public class CourseManagementDB extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("drop table if exists " + TABLE_USER);
-        sqLiteDatabase.execSQL("drop table if exists " + TABLE_COURSE);
-        sqLiteDatabase.execSQL("drop table if exists " + TABLE_REGISINFO);
+        sqLiteDatabase.execSQL("drop table if exists " + DATABASE_TABLE_USER);
+        sqLiteDatabase.execSQL("drop table if exists " + DATABASE_TABLE_COURSE);
+        sqLiteDatabase.execSQL("drop table if exists " + DATABASE_TABLE_REGISINFO);
         onCreate(sqLiteDatabase);
     }
 }
