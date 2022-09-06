@@ -28,7 +28,7 @@ public class CONFIG {
     public static final String SERVICE_GETALLCOURSE_NAME = "GetAllCourseServices";
     public static final String SERVICE_GETALLCOURSE_USER_ID = "userID";
     public static final String SERVICE_GETALLCOURSE_KEY ="isMine";
-    public static final String INTENT_GETALLCOURSE_ACTION ="actionGetAllCourse";
+    public static final String INTENT_GETALLCOURSE_ACTION ="GetAllCourse";
     public static final String INTENT_GETALLCOURSE_KEY_ALLCOURSE = "allCourse";
     public static final String INTENT_GETALLCOURSE_KEY_REGISTERED = "allCourseRegistered";
 
@@ -40,4 +40,5 @@ public class CONFIG {
     public static final String INTENT_HANDLE_KEY_ISREGISTERED = "handleCourse";
 
     public static final String SERVICE_RESULT = "resultCode";
+    public static final String SERVICE_ACTION = "action" ;
 }

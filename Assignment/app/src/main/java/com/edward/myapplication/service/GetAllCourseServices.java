@@ -3,6 +3,7 @@ package com.edward.myapplication.service;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETALLCOURSE_ACTION;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETALLCOURSE_KEY_ALLCOURSE;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETALLCOURSE_KEY_REGISTERED;
+import static com.edward.myapplication.config.CONFIG.SERVICE_ACTION;
 import static com.edward.myapplication.config.CONFIG.SERVICE_GETALLCOURSE_KEY;
 import static com.edward.myapplication.config.CONFIG.SERVICE_GETALLCOURSE_NAME;
 import static com.edward.myapplication.config.CONFIG.SERVICE_GETALLCOURSE_USER_ID;
@@ -38,14 +39,16 @@ public class GetAllCourseServices extends IntentService {
             String userID = intent.getStringExtra(SERVICE_GETALLCOURSE_USER_ID);
             boolean isMine = intent.getBooleanExtra(SERVICE_GETALLCOURSE_KEY, false);
 
+
             if (isMine) {
                 ArrayList<Course> allCourse = dataAccessObject.getAllCourse();
                 i.putExtra(INTENT_GETALLCOURSE_KEY_ALLCOURSE, allCourse);
             }
 
             ArrayList<Course> allCourseRegistered = dataAccessObject.getAllRegisteredCourses(userID);
+            dataAccessObject.close();
             i.putExtra(INTENT_GETALLCOURSE_KEY_REGISTERED, allCourseRegistered);
-            i.putExtra(INTENT_GETALLCOURSE_ACTION, action);
+            i.putExtra(SERVICE_ACTION, action);
             i.putExtra(SERVICE_RESULT, Activity.RESULT_OK);
             LocalBroadcastManager.getInstance(this).sendBroadcast(i); //https://viblo.asia/p/local-broadcast-trong-android-1VgZvxy75Aw
 

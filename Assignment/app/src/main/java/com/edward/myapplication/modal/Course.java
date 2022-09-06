@@ -9,6 +9,15 @@ public class Course implements Serializable {
     private String _Name;
     private String _Schedule;
     private String _testSchedule;
+    private boolean register;
+
+    public boolean isRegister() {
+        return register;
+    }
+
+    public void setRegister(boolean register) {
+        this.register = register;
+    }
 
     public int get_ID() {
         return _ID;
@@ -48,6 +57,14 @@ public class Course implements Serializable {
         this._Name = _Name;
         this._Schedule = _Schedule;
         this._testSchedule = _testSchedule;
+    }
+
+    public Course(int _ID, String _Name, String _Schedule, String _testSchedule, boolean register) {
+        this._ID = _ID;
+        this._Name = _Name;
+        this._Schedule = _Schedule;
+        this._testSchedule = _testSchedule;
+        this.register = register;
     }
 
     @Override

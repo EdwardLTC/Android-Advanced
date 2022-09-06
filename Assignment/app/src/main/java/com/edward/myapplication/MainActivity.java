@@ -1,17 +1,25 @@
 package com.edward.myapplication;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.edward.myapplication.ui.course.CourseFragment;
+import com.edward.myapplication.ui.maps.MapsFragment;
+import com.edward.myapplication.ui.news.NewsFragment;
+import com.edward.myapplication.ui.social.SocialFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -20,6 +28,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.edward.myapplication.databinding.ActivityMainBinding;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,12 +66,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_course, R.id.nav_maps, R.id.nav_news,R.id.nav_social)
-                .setOpenableLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        NavigationUI.setupWithNavController(navigationView, navController);
+        navigationView.getMenu().getItem(0).setChecked(true);
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            onSectionAttached(id);
+            drawer.closeDrawers();
+            return true;
+        });
     }
 
     @Override
@@ -90,5 +101,29 @@ public class MainActivity extends AppCompatActivity {
         final float xTranslation = xOffset - xOffsetDiff;
         view.setTranslationX(xTranslation);
 
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    public void onSectionAttached(int id) {
+        FragmentManager fragmentManager = getSupportFragmentManager(); // For AppCompat use getSupportFragmentManager
+        Fragment fragment = null;
+        switch (id) {
+            case R.id.nav_course:
+                fragment = new CourseFragment();
+                break;
+            case R.id.nav_maps:
+                fragment = new MapsFragment();
+                break;
+            case R.id.nav_news:
+                fragment = new NewsFragment();
+                break;
+            case R.id.nav_social:
+                fragment = new SocialFragment();
+                break;
+        }
+        fragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment_content_main, Objects.requireNonNull(fragment))
+                .addToBackStack(null)
+                .commit();
     }
 }

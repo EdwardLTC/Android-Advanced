@@ -6,13 +6,18 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.edward.myapplication.R;
 import com.edward.myapplication.databinding.FragmentCourseBinding;
+import com.edward.myapplication.ui.fragment.ListCourseFragment;
+
+import java.util.Objects;
 
 public class CourseFragment extends Fragment {
 
@@ -22,12 +27,7 @@ public class CourseFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentCourseBinding.inflate(inflater,container,false);
         View root = binding.getRoot();
-        binding.regis.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), "hehe", Toast.LENGTH_SHORT).show();
-            }
-        });
+        binding.regis.setOnClickListener(view -> changeFragment(R.layout.fragment_course_list));
         binding.courseRegistered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,5 +37,22 @@ public class CourseFragment extends Fragment {
         return root;
     }
 
+    private void changeFragment(int id){
+        FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        Fragment fragment = null;
+        switch (id){
+            case R.layout.fragment_course_list :
+                fragment = new ListCourseFragment();
+                break;
+        }
+        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, Objects.requireNonNull(fragment), null);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }

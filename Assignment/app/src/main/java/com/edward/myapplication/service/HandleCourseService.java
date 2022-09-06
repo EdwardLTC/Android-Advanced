@@ -6,6 +6,7 @@ import static com.edward.myapplication.config.CONFIG.INTENT_HANDLE_ACTION;
 import static com.edward.myapplication.config.CONFIG.INTENT_HANDLE_KEY_ALLCOURSE;
 import static com.edward.myapplication.config.CONFIG.INTENT_HANDLE_KEY_ALLCOURSEREGISTERED;
 import static com.edward.myapplication.config.CONFIG.INTENT_HANDLE_KEY_ISREGISTERED;
+import static com.edward.myapplication.config.CONFIG.SERVICE_ACTION;
 import static com.edward.myapplication.config.CONFIG.SERVICE_HANDLE_NAME;
 import static com.edward.myapplication.config.CONFIG.SERVICE_RESULT;
 
@@ -48,9 +49,10 @@ public class HandleCourseService extends IntentService {
 
             ArrayList<Course> allCourse = dataAccessObject.getAllCourse();
             ArrayList<Course> allCourseRegistered = dataAccessObject.getAllRegisteredCourses(userID);
+            dataAccessObject.close();
             i.putExtra(INTENT_HANDLE_KEY_ALLCOURSE, allCourse);
             i.putExtra(INTENT_HANDLE_KEY_ALLCOURSEREGISTERED, allCourseRegistered);
-            i.putExtra(INTENT_HANDLE_ACTION, action);
+            i.putExtra(SERVICE_ACTION, action);
             i.putExtra(SERVICE_RESULT, Activity.RESULT_OK);
             LocalBroadcastManager.getInstance(this).sendBroadcast(i); //https://viblo.asia/p/local-broadcast-trong-android-1VgZvxy75Aw
 
