@@ -79,6 +79,7 @@ public class ListCourseFragment extends Fragment {
                     case SERVICE_HANDLE_NAME:
                     case SERVICE_GETALLCOURSE_NAME:
                         allCourse.clear();
+
                         ArrayList<Course> m_allCourse = new ArrayList<>();
                         ArrayList<Course> m_allCourseRegistered = new ArrayList<>();
                         if (intent.getSerializableExtra(INTENT_GETALLCOURSE_KEY_ALLCOURSE) != null) {
@@ -88,7 +89,7 @@ public class ListCourseFragment extends Fragment {
                             m_allCourseRegistered.addAll((ArrayList<Course>) intent.getSerializableExtra(INTENT_GETALLCOURSE_KEY_REGISTERED));
                         }
 
-                        for (Course curse : m_allCourse) {
+                        for (Course curse : m_allCourse) {  //group arrays
                             for (Course course_registered : m_allCourseRegistered) {
                                 if (curse.get_ID() == course_registered.get_ID()) {
                                     curse.setRegister(true);
