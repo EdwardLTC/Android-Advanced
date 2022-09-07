@@ -41,7 +41,7 @@ public class GetAllCourseServices extends IntentService {
             boolean isMine = intent.getBooleanExtra(SERVICE_GETALLCOURSE_KEY, false);
 
 
-            if (isMine) {
+            if (!isMine) {
                 ArrayList<Course> allCourse = dataAccessObject.getAllCourse();
                 i.putExtra(INTENT_GETALLCOURSE_KEY_ALLCOURSE, allCourse);
             }

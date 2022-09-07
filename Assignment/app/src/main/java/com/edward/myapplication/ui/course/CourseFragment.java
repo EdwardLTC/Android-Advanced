@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.edward.myapplication.R;
 import com.edward.myapplication.databinding.FragmentCourseBinding;
 import com.edward.myapplication.ui.fragment.ListCourseFragment;
+import com.edward.myapplication.ui.fragment.MyCourseFragment;
 
 import java.util.Objects;
 
@@ -28,7 +29,7 @@ public class CourseFragment extends Fragment {
         binding = FragmentCourseBinding.inflate(inflater,container,false);
         View root = binding.getRoot();
         binding.regis.setOnClickListener(view -> changeFragment(new ListCourseFragment()));
-        binding.courseRegistered.setOnClickListener(view -> changeFragment(new ListCourseFragment()));
+        binding.courseRegistered.setOnClickListener(view -> changeFragment(new MyCourseFragment()));
         return root;
     }
 

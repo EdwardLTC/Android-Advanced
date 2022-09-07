@@ -6,9 +6,10 @@
     android:background="#FFF"
     tools:context=".ui.maps.MapsFragment">
 
-    <TextView
+    <com.google.android.gms.maps.MapView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello maps" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>

@@ -2,7 +2,6 @@ package com.edward.myapplication.ui.fragment;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
-
 import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_USER_ID;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETALLCOURSE_ACTION;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETALLCOURSE_KEY_ALLCOURSE;
@@ -33,16 +32,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.edward.myapplication.R;
 import com.edward.myapplication.adapter.CourseAdapter;
-import com.edward.myapplication.dao.DataAccessObject;
 import com.edward.myapplication.modal.Course;
 import com.edward.myapplication.service.GetAllCourseServices;
 
 import java.util.ArrayList;
 
-public class ListCourseFragment extends Fragment {
+public class MyCourseFragment extends Fragment {
     ArrayList<Course> allCourse = new ArrayList<>();
     RecyclerView recyclerView;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,7 +57,7 @@ public class ListCourseFragment extends Fragment {
 
         Intent intent = new Intent(getContext(), GetAllCourseServices.class);
         intent.putExtra(DATABASE_KEY_USER_ID, "ps01");
-        intent.putExtra(SERVICE_GETALLCOURSE_KEY, false);
+        intent.putExtra(SERVICE_GETALLCOURSE_KEY, true);
         intent.setAction(SERVICE_GETALLCOURSE_NAME);
         requireActivity().startService(intent);
 
@@ -80,25 +77,16 @@ public class ListCourseFragment extends Fragment {
                     case SERVICE_GETALLCOURSE_NAME:
                         allCourse.clear();
 
-                        ArrayList<Course> m_allCourse = new ArrayList<>();
                         ArrayList<Course> m_allCourseRegistered = new ArrayList<>();
-                        if (intent.getSerializableExtra(INTENT_GETALLCOURSE_KEY_ALLCOURSE) != null) {
-                            m_allCourse.addAll((ArrayList<Course>) intent.getSerializableExtra(INTENT_GETALLCOURSE_KEY_ALLCOURSE));
-                        }
+
                         if (intent.getSerializableExtra(INTENT_GETALLCOURSE_KEY_REGISTERED) != null) {
                             m_allCourseRegistered.addAll((ArrayList<Course>) intent.getSerializableExtra(INTENT_GETALLCOURSE_KEY_REGISTERED));
                         }
-
-                        for (Course curse : m_allCourse) {  //group arrays
-                            for (Course course_registered : m_allCourseRegistered) {
-                                if (curse.get_ID() == course_registered.get_ID()) {
-                                    curse.setRegister(true);
-                                    break;
-                                }
-                            }
-                            allCourse.add(curse);
+                        for (Course course: m_allCourseRegistered) {
+                            course.setRegister(true);
                         }
 
+                        allCourse.addAll(m_allCourseRegistered);
                         CourseAdapter adapter = new CourseAdapter(requireContext(), allCourse);
                         recyclerView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
