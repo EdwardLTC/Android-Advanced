@@ -1,5 +1,6 @@
 package com.edward.myapplication.service;
 
+import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_USER_ID;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETALLCOURSE_ACTION;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETALLCOURSE_KEY_ALLCOURSE;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETALLCOURSE_KEY_REGISTERED;
@@ -36,7 +37,7 @@ public class GetAllCourseServices extends IntentService {
             Intent i = new Intent(INTENT_GETALLCOURSE_ACTION);//result intent
 
             String action = intent.getAction();
-            String userID = intent.getStringExtra(SERVICE_GETALLCOURSE_USER_ID);
+            String userID = intent.getStringExtra(DATABASE_KEY_USER_ID);
             boolean isMine = intent.getBooleanExtra(SERVICE_GETALLCOURSE_KEY, false);
 
 

@@ -13,6 +13,7 @@ import static com.edward.myapplication.config.CONFIG.SERVICE_RESULT;
 import android.app.Activity;
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -42,9 +43,14 @@ public class HandleCourseService extends IntentService {
             boolean isRegister = intent.getBooleanExtra(INTENT_HANDLE_KEY_ISREGISTERED, false);
 
             if (isRegister) {
-                dataAccessObject.handleRegisterCourse(userID, courseID);
+                if (!dataAccessObject.handleRegisterCourse(userID, courseID)){
+                    Log.e("Err handle register", "onHandleIntent: " );
+                }
             } else {
-                dataAccessObject.handleUnRegisterCourse(userID, courseID);
+
+                if (!dataAccessObject.handleUnRegisterCourse(userID, courseID)){
+                    Log.e("Err handle UnRegister", "onHandleIntent: " );
+                }
             }
 
             ArrayList<Course> allCourse = dataAccessObject.getAllCourse();

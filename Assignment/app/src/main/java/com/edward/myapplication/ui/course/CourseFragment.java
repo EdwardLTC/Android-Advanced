@@ -27,24 +27,13 @@ public class CourseFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentCourseBinding.inflate(inflater,container,false);
         View root = binding.getRoot();
-        binding.regis.setOnClickListener(view -> changeFragment(R.layout.fragment_course_list));
-        binding.courseRegistered.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), "hehe1", Toast.LENGTH_SHORT).show();
-            }
-        });
+        binding.regis.setOnClickListener(view -> changeFragment(new ListCourseFragment()));
+        binding.courseRegistered.setOnClickListener(view -> changeFragment(new ListCourseFragment()));
         return root;
     }
 
-    private void changeFragment(int id){
+    private void changeFragment(Fragment fragment){
         FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
-        Fragment fragment = null;
-        switch (id){
-            case R.layout.fragment_course_list :
-                fragment = new ListCourseFragment();
-                break;
-        }
         fragmentTransaction.replace(R.id.nav_host_fragment_content_main, Objects.requireNonNull(fragment), null);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();

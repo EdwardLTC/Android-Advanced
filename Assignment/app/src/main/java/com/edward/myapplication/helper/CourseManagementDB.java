@@ -44,7 +44,7 @@ public class CourseManagementDB extends SQLiteOpenHelper {
         //course table
         String sqlCourse = " CREATE TABLE " + DATABASE_TABLE_COURSE +
                 "(" +
-                DATABASE_KEY_COURSE_ID + " INTEGER primary key, " +
+                DATABASE_KEY_COURSE_ID + " INTEGER primary key , " +
                 DATABASE_KEY_COURSE_NAME + " TEXT, " +
                 DATABASE_KEY_COURSE_SCHEDULE + " TEXT, " +
                 DATABASE_KEY_COURSE_TESTSCHEDULE + " TEXT " +
@@ -63,11 +63,18 @@ public class CourseManagementDB extends SQLiteOpenHelper {
                 ")";
         sqLiteDatabase.execSQL(sqlRegister);
 
-        String tempData = "INSERT INTO " + DATABASE_TABLE_COURSE +
+        String tempDataCourse = "INSERT INTO " + DATABASE_TABLE_COURSE +
                 " VALUES ('1','Android','case 2','22/4')," +
                 "('2','Android 2','case 2','22/4')," +
                 "('3','Android 3','case 2','22/4')";
-        sqLiteDatabase.execSQL(tempData);
+        sqLiteDatabase.execSQL(tempDataCourse);
+
+        String tempDataUser = "INSERT INTO " + DATABASE_TABLE_USER + " VALUES" +
+                "('ps01','Cong','null','null','null')," +
+                "('ps02','Mai','null','null','null')," +
+                "('ps03','Dung','null','null','null')";
+        sqLiteDatabase.execSQL(tempDataUser);
+
     }
 
     @Override

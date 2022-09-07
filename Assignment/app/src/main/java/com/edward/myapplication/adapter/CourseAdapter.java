@@ -1,18 +1,28 @@
 package com.edward.myapplication.adapter;
 
+import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_COURSE_ID;
+import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_USER_ID;
+import static com.edward.myapplication.config.CONFIG.INTENT_HANDLE_ACTION;
+import static com.edward.myapplication.config.CONFIG.INTENT_HANDLE_KEY_ISREGISTERED;
+import static com.edward.myapplication.config.CONFIG.SERVICE_GETALLCOURSE_USER_ID;
+
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.edward.myapplication.R;
 import com.edward.myapplication.modal.Course;
+import com.edward.myapplication.service.HandleCourseService;
 
 import java.util.ArrayList;
 
@@ -64,6 +74,16 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
             holder.register.setText("Register");
             holder.register.setBackgroundColor(Color.parseColor("#1884D6"));
         }
+
+        holder.register.setOnClickListener(view -> {
+            Intent intent = new Intent(context, HandleCourseService.class);
+            intent.putExtra(DATABASE_KEY_USER_ID, "ps01");
+            intent.putExtra(DATABASE_KEY_COURSE_ID,tempCourse.get_ID());
+            intent.putExtra(INTENT_HANDLE_KEY_ISREGISTERED, !tempCourse.isRegister());
+            intent.setAction(INTENT_HANDLE_ACTION);
+            context.startService(intent);
+        });
+
     }
 
     @Override
