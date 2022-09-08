@@ -2,6 +2,7 @@ package com.edward.myapplication.ui.fragment;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static com.edward.myapplication.config.CONFIG.CHOOSE_FLATFORM;
 import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_USER_ID;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETALLCOURSE_ACTION;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETALLCOURSE_KEY_ALLCOURSE;
@@ -12,6 +13,7 @@ import static com.edward.myapplication.config.CONFIG.SERVICE_GETALLCOURSE_KEY;
 import static com.edward.myapplication.config.CONFIG.SERVICE_GETALLCOURSE_NAME;
 import static com.edward.myapplication.config.CONFIG.SERVICE_HANDLE_NAME;
 import static com.edward.myapplication.config.CONFIG.SERVICE_RESULT;
+import static com.edward.myapplication.config.CONFIG.SHARE_TITLE;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -43,7 +45,7 @@ public class MyCourseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_course_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_course_of_mine, container, false);
 
         recyclerView = view.findViewById(R.id.recycleView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
@@ -55,6 +57,7 @@ public class MyCourseFragment extends Fragment {
         IntentFilter filterRegisterCourse = new IntentFilter(INTENT_HANDLE_ACTION);
         LocalBroadcastManager.getInstance(requireContext()).registerReceiver(getAllCourseReceiver, filterRegisterCourse);
 
+        view.findViewById(R.id.fab).setOnClickListener(view1 -> ShareDetailCourse());
         Intent intent = new Intent(getContext(), GetAllCourseServices.class);
         intent.putExtra(DATABASE_KEY_USER_ID, "ps01");
         intent.putExtra(SERVICE_GETALLCOURSE_KEY, true);
@@ -103,5 +106,24 @@ public class MyCourseFragment extends Fragment {
     public void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(getAllCourseReceiver);
+    }
+
+    private void ShareDetailCourse() {
+        String content = "Edward signed up for these course\n\n";
+        for (Course khdk : allCourse) {
+            content = content.concat(khdk.get_Name())
+                    .concat("\nSchedule: ")
+                    .concat(khdk.get_Schedule())
+                    .concat("\nTest Schedule: ")
+                    .concat(khdk.get_testSchedule())
+                    .concat("\n-----------\n");
+        }
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, content);
+        intent.putExtra(Intent.EXTRA_SUBJECT, SHARE_TITLE);
+        intent.setType("text/plain");
+
+        startActivity(Intent.createChooser(intent, CHOOSE_FLATFORM));
     }
 }

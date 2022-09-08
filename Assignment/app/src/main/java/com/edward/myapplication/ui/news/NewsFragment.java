@@ -15,11 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.edward.myapplication.adapter.RSSAdapter;
@@ -32,11 +30,10 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+@SuppressWarnings("ALL")
 public class NewsFragment extends Fragment {
     // TODO: 9/8/2022  
     private FragmentNewsBinding binding;
@@ -44,7 +41,7 @@ public class NewsFragment extends Fragment {
     ArrayList<String> titles;
     ArrayList<String> description;
     ArrayList<String> link;
-    ArrayList<String> pubdate;
+    ArrayList<String> date;
     ArrayList<RSS> rss;
 
     @Override
@@ -56,7 +53,7 @@ public class NewsFragment extends Fragment {
         titles = new ArrayList<>();
         description = new ArrayList<>();
         link = new ArrayList<>();
-        pubdate = new ArrayList<>();
+        date = new ArrayList<>();
         rss = new ArrayList<>();
         lvData = binding.lv;
 
@@ -122,7 +119,7 @@ public class NewsFragment extends Fragment {
                             }
                         } else if (xpp.getName().equalsIgnoreCase("pubdate")){
                             if (insideItem){
-                                pubdate.add(xpp.nextText());
+                                date.add(xpp.nextText());
                             }
                         }
                     } else if (eventType == XmlPullParser.END_TAG && xpp.getName().equalsIgnoreCase("item")) {
@@ -132,11 +129,7 @@ public class NewsFragment extends Fragment {
                     eventType = xpp.next();
                 }
 
-            } catch (MalformedURLException e) {
-                exception = e;
-            } catch (XmlPullParserException e) {
-                exception = e;
-            } catch (IOException e) {
+            } catch (XmlPullParserException | IOException e) {
                 exception = e;
             }
 

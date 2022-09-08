@@ -49,5 +49,8 @@ public class CONFIG {
     public static final String MAP_CONTENT = "Thanh Cong cute lam a nha :>";
     public static final String RSS_LINK = "https://vnexpress.net/rss/giao-duc.rss";
     public static final String RSS_LOADING = "Loading RSS Feed...";
+    public static final String CHOOSE_FLATFORM = "choose a platform to share";
+    public static final String SHARE_TITLE = "Edward share";
+
 
 }
