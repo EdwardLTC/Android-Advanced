@@ -43,9 +43,11 @@ public class CONFIG {
     public static final String SERVICE_ACTION = "action" ;
 
     //text
-    public static float MAP_LATITUDE = (float) 10.8529391;
-    public static float MAP_LONGITUDE = (float) 106.6295448;
-    public static String MAP_TITLE = "FPT Polytechnic";
-    public static String MAP_CONTENT = "Thanh Cong cute lam a nha :>";
+    public static final float MAP_LATITUDE = (float) 10.8529391;
+    public static final float MAP_LONGITUDE = (float) 106.6295448;
+    public static final String MAP_TITLE = "FPT Polytechnic";
+    public static final String MAP_CONTENT = "Thanh Cong cute lam a nha :>";
+    public static final String RSS_LINK = "https://vnexpress.net/rss/giao-duc.rss";
+    public static final String RSS_LOADING = "Loading RSS Feed...";
 
 }
