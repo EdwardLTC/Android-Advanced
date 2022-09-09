@@ -3,31 +3,27 @@ package com.edward.myapplication;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.edward.myapplication.ui.course.CourseFragment;
+import com.edward.myapplication.ui.admin.AdminFragment;
 import com.edward.myapplication.ui.maps.MapsFragment;
 import com.edward.myapplication.ui.news.NewsFragment;
 import com.edward.myapplication.ui.social.SocialFragment;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.edward.myapplication.databinding.ActivityMainBinding;
 
 import java.util.Objects;
 
@@ -36,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private NavigationView navigationView;
     private View view;
-
+    private int role = 0;
     private static final float END_SCALE = 0.7f;
 
     @Override
@@ -46,8 +42,10 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        com.edward.myapplication.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        com.edward.myapplication.databinding.ActivityMainBinding binding = com.edward.myapplication.databinding.ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
 
         //custom drawer view
         view = findViewById(R.id.app_bar_main);
@@ -66,6 +64,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        if (role == 0 ){ //set startDestination if role admin
+            NavOptions options = new NavOptions.Builder()
+                    .setPopUpTo(R.id.nav_course, true)
+                    .build();
+            navController.navigate(R.id.roleSwitch, savedInstanceState, options);
+            navigationView.getMenu().getItem(0).setTitle("Admin");
+        }
+
         navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -73,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
             drawer.closeDrawers();
             return true;
         });
+
     }
 
     @Override
@@ -109,7 +116,11 @@ public class MainActivity extends AppCompatActivity {
         Fragment fragment = null;
         switch (id) {
             case R.id.nav_course:
-                fragment = new CourseFragment();
+                if (role == 0){
+                    fragment = new AdminFragment();
+                }else {
+                    fragment = new CourseFragment();
+                }
                 break;
             case R.id.nav_maps:
                 fragment = new MapsFragment();
@@ -122,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         fragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment_content_main, Objects.requireNonNull(fragment))
+                .add(R.id.nav_host_fragment_content_main, Objects.requireNonNull(fragment))
                 .addToBackStack(null)
                 .commit();
     }

@@ -44,7 +44,8 @@
         </provider>
         <service android:name=".service.GetAllCourseServices"/>
         <service android:name=".service.HandleCourseService"/>
-       
+        <service android:name=".service.GetAllUserService"/>
+        <service android:name=".service.GetAllRegisterInfo"/>
     </application>
 
 </manifest>

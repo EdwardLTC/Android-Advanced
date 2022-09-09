@@ -64,7 +64,6 @@ public class ListCourseFragment extends Fragment {
         intent.setAction(SERVICE_GETALLCOURSE_NAME);
         requireActivity().startService(intent);
 
-
         return view;
     }
 

@@ -1,6 +1,8 @@
 package com.edward.myapplication.config;
 
 
+import java.net.PortUnreachableException;
+
 public class CONFIG {
     // TODO: 9/6/2022
     // Database
@@ -41,6 +43,17 @@ public class CONFIG {
 
     public static final String SERVICE_RESULT = "resultCode";
     public static final String SERVICE_ACTION = "action" ;
+
+    //Service Get all User
+    public static final String INTENT_GETALLUSER_KEY_USERLIST = "GetAllUserList";
+    public static final String SERVICE_GETALLUSER_NAME = "GetAllUserService";
+    public static final String INTENT_GETALLUSER_ACTION ="GetAllUser";
+
+    //Service Get all Register Info
+    public static final String INTENT_GETREGISTERINFO_KEY_REGISTINFO = "GetAllUserList";
+    public static final String SERVICE_GETREGISTERINFO_NAME = "GetAllUserService";
+    public static final String INTENT_GETREGISTERINFO_ACTION ="GetAllUser";
+
 
     //text
     public static final float MAP_LATITUDE = (float) 10.8529391;

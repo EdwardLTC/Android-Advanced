@@ -9,7 +9,11 @@
         android:id="@+id/nav_course"
         android:name="com.edward.myapplication.ui.course.CourseFragment"
         android:label="fragment_course"
-        tools:layout="@layout/fragment_course" />
+        tools:layout="@layout/fragment_course" >
+        <action android:id="@+id/roleSwitch"
+            app:destination="@+id/nav_admin"
+            />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_maps"
@@ -26,5 +30,10 @@
         android:name="com.edward.myapplication.ui.social.SocialFragment"
         android:label="fragment_social"
         tools:layout="@layout/fragment_social" />
+    <fragment
+        android:id="@+id/nav_admin"
+        android:name="com.edward.myapplication.ui.admin.AdminFragment"
+        android:label="fragment_admin2"
+        tools:layout="@layout/fragment_admin" />
 
 </navigation>
