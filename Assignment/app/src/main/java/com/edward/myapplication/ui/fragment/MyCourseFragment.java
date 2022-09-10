@@ -44,6 +44,7 @@ import java.util.ArrayList;
 public class MyCourseFragment extends Fragment {
     ArrayList<Course> allCourse = new ArrayList<>();
     RecyclerView recyclerView;
+    private String UID = "ps01";
 
     @Nullable
     @Override
@@ -62,7 +63,7 @@ public class MyCourseFragment extends Fragment {
 
         view.findViewById(R.id.fab).setOnClickListener(view1 -> ShareDetailCourse());
         Intent intent = new Intent(getContext(), GetAllCourseServices.class);
-        intent.putExtra(DATABASE_KEY_USER_ID, "ps01");
+        intent.putExtra(DATABASE_KEY_USER_ID, UID);
         intent.putExtra(SERVICE_GETALLCOURSE_KEY, true);
         intent.setAction(SERVICE_GETALLCOURSE_NAME);
         requireActivity().startService(intent);

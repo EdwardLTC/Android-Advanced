@@ -27,7 +27,7 @@ public class AdminFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentAdminBinding.inflate(inflater,container,false);
         View root = binding.getRoot();
-        binding.courseManagement.setOnClickListener(view -> changeFragment(new AdminUserManager()));
+        binding.courseManagement.setOnClickListener(view -> changeFragment(new AdminCourseManager()));
         binding.userManagement.setOnClickListener(view -> changeFragment(new AdminUserManager()));
         return root;
     }

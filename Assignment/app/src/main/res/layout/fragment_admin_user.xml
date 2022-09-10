@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#FFF">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.baoyz.swipemenulistview.SwipeMenuListView
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
