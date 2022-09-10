@@ -54,6 +54,12 @@ public class CONFIG {
     public static final String SERVICE_GETREGISTERINFO_NAME = "GetAllUserService";
     public static final String INTENT_GETREGISTERINFO_ACTION ="GetAllUser";
 
+    //service Remove user
+    public static final String SERVICE_REMOVE_NAME = "HandleRemoveUserCourse" ;
+    public static final String INTENT_REMOVE_ACTION ="RemoveUserCourse";
+    public static final String ACTION_REMOVE_KEY_REMOVEUSER ="ResultRemoveUser";
+    public static final String ACTION_REMOVE_KEY_REMOVECOURSE ="ResultRemoveCourse";
+
 
     //text
     public static final float MAP_LATITUDE = (float) 10.8529391;

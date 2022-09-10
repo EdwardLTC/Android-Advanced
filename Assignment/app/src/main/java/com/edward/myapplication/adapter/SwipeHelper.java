@@ -33,15 +33,15 @@ import java.util.Queue;
 public class SwipeHelper extends ItemTouchHelper.SimpleCallback{
     // TODO: 9/10/2022
     public static final int BUTTON_WIDTH = 150;
-    private RecyclerView recyclerView;
+    private final RecyclerView recyclerView;
     private List<UnderlayButton> buttons;
-    private GestureDetector gestureDetector;
+    private final GestureDetector gestureDetector;
     private int swipedPos = -1;
     private float swipeThreshold = 0.5f;
-    private Map<Integer, List<UnderlayButton>> buttonsBuffer;
-    private Queue<Integer> recoverQueue;
+    private final Map<Integer, List<UnderlayButton>> buttonsBuffer;
+    private final Queue<Integer> recoverQueue;
 
-    private GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener(){
+    private final GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener(){
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
             for (UnderlayButton button : buttons){
@@ -53,7 +53,7 @@ public class SwipeHelper extends ItemTouchHelper.SimpleCallback{
         }
     };
 
-    private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
+    private final View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent e) {
             if (swipedPos < 0) return false;
@@ -199,13 +199,13 @@ public class SwipeHelper extends ItemTouchHelper.SimpleCallback{
     }
 
     public static class UnderlayButton {
-        private String text;
-        private int imageResId;
-        private int color;
+        private final String text;
+        private final int imageResId;
+        private final int color;
         private int pos;
         private RectF clickRegion;
-        private UnderlayButtonClickListener clickListener;
-        private Context context;
+        private final UnderlayButtonClickListener clickListener;
+        private final Context context;
 
         public UnderlayButton(String text, int imageResId, int color,Context context, UnderlayButtonClickListener clickListener) {
             this.text = text;

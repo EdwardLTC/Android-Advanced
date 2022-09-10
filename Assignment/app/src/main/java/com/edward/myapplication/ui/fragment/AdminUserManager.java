@@ -2,12 +2,18 @@ package com.edward.myapplication.ui.fragment;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static com.edward.myapplication.config.CONFIG.ACTION_REMOVE_KEY_REMOVECOURSE;
+import static com.edward.myapplication.config.CONFIG.ACTION_REMOVE_KEY_REMOVEUSER;
+import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_COURSE_ID;
 import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_USER_ID;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETALLCOURSE_ACTION;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETALLCOURSE_KEY_ALLCOURSE;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETALLCOURSE_KEY_REGISTERED;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETALLUSER_ACTION;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETREGISTERINFO_KEY_REGISTINFO;
+import static com.edward.myapplication.config.CONFIG.INTENT_REMOVE_ACTION;
+import static com.edward.myapplication.config.CONFIG.RSS_LINK;
+import static com.edward.myapplication.config.CONFIG.RSS_LOADING;
 import static com.edward.myapplication.config.CONFIG.SERVICE_ACTION;
 import static com.edward.myapplication.config.CONFIG.SERVICE_GETALLCOURSE_KEY;
 import static com.edward.myapplication.config.CONFIG.SERVICE_GETALLCOURSE_NAME;
@@ -16,11 +22,14 @@ import static com.edward.myapplication.config.CONFIG.SERVICE_HANDLE_NAME;
 import static com.edward.myapplication.config.CONFIG.SERVICE_RESULT;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +40,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -39,12 +49,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.edward.myapplication.R;
 import com.edward.myapplication.adapter.CourseAdapter;
+import com.edward.myapplication.adapter.RSSAdapter;
 import com.edward.myapplication.adapter.SwipeHelper;
 import com.edward.myapplication.adapter.UserAdapter;
 import com.edward.myapplication.modal.Course;
+import com.edward.myapplication.modal.RSS;
 import com.edward.myapplication.modal.User;
+import com.edward.myapplication.service.GetAllCourseServices;
 import com.edward.myapplication.service.GetAllUserService;
+import com.edward.myapplication.service.HandleRemoveUserCourse;
+import com.edward.myapplication.ui.news.NewsFragment;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,29 +83,39 @@ public class AdminUserManager extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        IntentFilter filterGetAllUser = new IntentFilter(INTENT_GETALLUSER_ACTION);
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(getAllUserReceiver, filterGetAllUser);
+
+        IntentFilter filterRemove = new IntentFilter(INTENT_REMOVE_ACTION);
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(getAllUserReceiver, filterRemove);
+
+        Intent intent = new Intent(getContext(), GetAllUserService.class);
+        intent.setAction(SERVICE_GETALLUSER_NAME);
+
+        Intent intent2 = new Intent(getContext(), HandleRemoveUserCourse.class);
+
         SwipeHelper swipeHelper = new SwipeHelper(requireContext(), recyclerView) {
             @Override
             public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
-                underlayButtons.add(new SwipeHelper.UnderlayButton(
-                        "Delete",
-                        R.drawable.list,
-                        Color.parseColor("#FF3C30"),
-                        requireContext(),
-                        new SwipeHelper.UnderlayButtonClickListener() {
-                            @Override
-                            public void onClick(int pos) {
-                                Toast.makeText(requireContext(), "Delete", Toast.LENGTH_SHORT).show();
-                                //handle remove User
-//                                viewHolder.getAdapterPosition()
-                            }
+                underlayButtons.add(new SwipeHelper.UnderlayButton("Delete", R.drawable.list, Color.parseColor("#FF3C30"), requireContext(), pos -> {
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(requireContext());
+                            dialog.setTitle("chac chua ?")
+                                    .setNegativeButton("Cancel", (dialoginterface, i) -> dialoginterface.cancel())
+                                    .setPositiveButton("Ok", (dialoginterface, i) -> {
+                                        try {
+                                            User user = listUser.get(viewHolder.getAdapterPosition());
+                                            intent2.putExtra(DATABASE_KEY_USER_ID, user.get_ID());
+                                            intent2.setAction(ACTION_REMOVE_KEY_REMOVEUSER);
+                                            requireActivity().startService(intent2);
+                                            requireActivity().startService(intent);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }).show();
                         }
                 ));
 
-                underlayButtons.add(new SwipeHelper.UnderlayButton(
-                        "Transfer",
-                        R.drawable.list,
-                        Color.parseColor("#FF9502"),
-                        requireContext(),
+                underlayButtons.add(new SwipeHelper.UnderlayButton("Transfer", R.drawable.list, Color.parseColor("#FF9502"), requireContext(),
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
@@ -97,10 +128,6 @@ public class AdminUserManager extends Fragment {
             }
         };
         swipeHelper.attachSwipe();
-        IntentFilter filterGetAllUser = new IntentFilter(INTENT_GETALLUSER_ACTION);
-        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(getAllUserReceiver, filterGetAllUser);
-        Intent intent = new Intent(getContext(), GetAllUserService.class);
-        intent.setAction(SERVICE_GETALLUSER_NAME);
         requireActivity().startService(intent);
         return view;
     }
@@ -113,17 +140,9 @@ public class AdminUserManager extends Fragment {
             if (resultCode == RESULT_OK) {
                 String action = intent.getStringExtra(SERVICE_ACTION);
                 switch (action) {
+                    case ACTION_REMOVE_KEY_REMOVEUSER:
                     case SERVICE_GETALLUSER_NAME:
-                        listUser.clear();
-                        ArrayList<User> m_allUser = new ArrayList<>();
-                        if (intent.getSerializableExtra(INTENT_GETREGISTERINFO_KEY_REGISTINFO) != null) {
-                            m_allUser.addAll((ArrayList<User>) intent.getSerializableExtra(INTENT_GETREGISTERINFO_KEY_REGISTINFO));
-                        }
-                        System.out.println(m_allUser);
-                        listUser.addAll(m_allUser);
-                        UserAdapter userAdapter = new UserAdapter(requireContext(), listUser);
-                        recyclerView.setAdapter(userAdapter);
-                        userAdapter.notifyDataSetChanged();
+                        new ProcessInBackground(intent).execute();
                         break;
                     default:
                         break;
@@ -132,4 +151,49 @@ public class AdminUserManager extends Fragment {
 
         }
     };
+
+    @SuppressLint("StaticFieldLeak")
+    private class ProcessInBackground extends AsyncTask<Integer, Void, Exception> {
+        ProgressDialog progressDialog = new ProgressDialog(getContext());
+        Exception exception = null;
+        Intent intent;
+
+        public ProcessInBackground(Intent intent) {
+            this.intent = intent;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.setMessage("loading data");
+
+            progressDialog.show();
+        }
+
+        @Override
+        protected Exception doInBackground(Integer... integers) {
+            listUser.clear();
+            if (intent.getSerializableExtra(INTENT_GETREGISTERINFO_KEY_REGISTINFO) != null) {
+                listUser.addAll((ArrayList<User>) intent.getSerializableExtra(INTENT_GETREGISTERINFO_KEY_REGISTINFO));
+            }
+            return exception;
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        @Override
+        protected void onPostExecute(Exception s) {
+            super.onPostExecute(s);
+            UserAdapter userAdapter = new UserAdapter(requireContext(), listUser);
+            recyclerView.setAdapter(userAdapter);
+            userAdapter.notifyDataSetChanged();
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(getAllUserReceiver);
+    }
+
 }

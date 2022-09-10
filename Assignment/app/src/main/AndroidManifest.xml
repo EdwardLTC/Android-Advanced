@@ -46,6 +46,7 @@
         <service android:name=".service.HandleCourseService"/>
         <service android:name=".service.GetAllUserService"/>
         <service android:name=".service.GetAllRegisterInfo"/>
+        <service android:name=".service.HandleRemoveUserCourse"/>
     </application>
 
 </manifest>

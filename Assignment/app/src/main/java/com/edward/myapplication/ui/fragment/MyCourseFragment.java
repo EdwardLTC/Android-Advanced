@@ -16,10 +16,12 @@ import static com.edward.myapplication.config.CONFIG.SERVICE_RESULT;
 import static com.edward.myapplication.config.CONFIG.SHARE_TITLE;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +44,7 @@ import java.util.ArrayList;
 public class MyCourseFragment extends Fragment {
     ArrayList<Course> allCourse = new ArrayList<>();
     RecyclerView recyclerView;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -78,22 +81,7 @@ public class MyCourseFragment extends Fragment {
                 switch (action) {
                     case SERVICE_HANDLE_NAME:
                     case SERVICE_GETALLCOURSE_NAME:
-                        allCourse.clear();
-
-                        ArrayList<Course> m_allCourseRegistered = new ArrayList<>();
-
-                        if (intent.getSerializableExtra(INTENT_GETALLCOURSE_KEY_REGISTERED) != null) {
-                            m_allCourseRegistered.addAll((ArrayList<Course>) intent.getSerializableExtra(INTENT_GETALLCOURSE_KEY_REGISTERED));
-                        }
-                        for (Course course: m_allCourseRegistered) {
-                            course.setRegister(true);
-                        }
-
-                        allCourse.addAll(m_allCourseRegistered);
-                        CourseAdapter adapter = new CourseAdapter(requireContext(), allCourse);
-                        recyclerView.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
-
+                        new ProcessInBackground(intent).execute();
                         break;
                     default:
                         break;
@@ -108,6 +96,49 @@ public class MyCourseFragment extends Fragment {
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(getAllCourseReceiver);
     }
 
+    @SuppressLint("StaticFieldLeak")
+    private class ProcessInBackground extends AsyncTask<Integer, Void, Exception> {
+        ProgressDialog progressDialog = new ProgressDialog(getContext());
+        Exception exception = null;
+        Intent intent;
+        ArrayList<Course> m_allCourseRegistered = new ArrayList<>();
+
+        public ProcessInBackground(Intent intent) {
+            this.intent = intent;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.setMessage("loading data");
+
+            progressDialog.show();
+        }
+
+        @Override
+        protected Exception doInBackground(Integer... integers) {
+            allCourse.clear();
+            if (intent.getSerializableExtra(INTENT_GETALLCOURSE_KEY_REGISTERED) != null) {
+                m_allCourseRegistered.addAll((ArrayList<Course>) intent.getSerializableExtra(INTENT_GETALLCOURSE_KEY_REGISTERED));
+            }
+            for (Course course : m_allCourseRegistered) {
+                course.setRegister(true);
+            }
+            return exception;
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        @Override
+        protected void onPostExecute(Exception s) {
+            super.onPostExecute(s);
+            allCourse.addAll(m_allCourseRegistered);
+            CourseAdapter adapter = new CourseAdapter(requireContext(), allCourse);
+            recyclerView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+
+            progressDialog.dismiss();
+        }
+    }
     private void ShareDetailCourse() {
         String content = "Edward signed up for these course\n\n";
         for (Course khdk : allCourse) {

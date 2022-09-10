@@ -90,6 +90,18 @@ public class DataAccessObject extends CourseManagementDB {
         return list;
     }
 
+    public boolean handleRemoveUser(String _userId){
+        SQLiteDatabase sqLiteDatabase = courseManagementDB.getWritableDatabase();
+        long i = sqLiteDatabase.delete(DATABASE_TABLE_USER, DATABASE_KEY_USER_ID + "=?", new String[]{_userId});
+        return i != -1;
+    }
+
+    public boolean handleRemoveCourse(int _courseId){
+        SQLiteDatabase sqLiteDatabase = courseManagementDB.getWritableDatabase();
+        long i = sqLiteDatabase.delete(DATABASE_TABLE_COURSE, DATABASE_KEY_COURSE_ID + "=?", new String[]{String.valueOf(_courseId)});
+        return i != -1;
+    }
+
     public ArrayList<RegisterInfo> getAllRegisterInfo() {
         SQLiteDatabase sqLiteDatabase = courseManagementDB.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery("select * from " + DATABASE_TABLE_REGISINFO, null);

@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.edward.myapplication.R;
-import com.edward.myapplication.modal.Course;
 import com.edward.myapplication.modal.User;
 
 import java.util.ArrayList;
@@ -58,6 +57,5 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.ViewHolder>{
     public int getItemCount() {
         return list.size();
     }
-
 
 }
