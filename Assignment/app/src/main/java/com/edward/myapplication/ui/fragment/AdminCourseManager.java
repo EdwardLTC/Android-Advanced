@@ -2,7 +2,9 @@ package com.edward.myapplication.ui.fragment;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static com.edward.myapplication.config.CONFIG.ACTION_REMOVE_KEY_REMOVECOURSE;
 import static com.edward.myapplication.config.CONFIG.ACTION_REMOVE_KEY_REMOVEUSER;
+import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_COURSE_ID;
 import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_USER_ID;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETALLCOURSE_ACTION;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETALLCOURSE_KEY_ALLCOURSE;
@@ -47,6 +49,7 @@ import com.edward.myapplication.modal.Course;
 import com.edward.myapplication.modal.User;
 import com.edward.myapplication.service.GetAllCourseServices;
 import com.edward.myapplication.service.GetAllUserService;
+import com.edward.myapplication.service.HandleRemoveUserCourse;
 
 import java.util.ArrayList;
 
@@ -70,6 +73,7 @@ public class AdminCourseManager extends Fragment {
 //        intent.putExtra(DATABASE_KEY_USER_ID, "ps01");
         intent.putExtra(SERVICE_GETALLCOURSE_KEY, false);
 
+        Intent intent2 = new Intent(requireContext(), HandleRemoveUserCourse.class);
         SwipeMenuCreator creator = menu -> {
             SwipeMenuItem openItem = new SwipeMenuItem(requireContext());
             openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9, 0xCE)));
@@ -107,18 +111,17 @@ public class AdminCourseManager extends Fragment {
                     Toast.makeText(requireContext(), "Action 1 for " + value, Toast.LENGTH_SHORT).show();
                     break;
                 case 1:
-                    Toast.makeText(requireContext(), "Action 2 for " + value, Toast.LENGTH_SHORT).show();
-//                    AlertDialog.Builder dialog = new AlertDialog.Builder(requireContext());
-//                    dialog.setTitle("Hello")
-//                            .setMessage("co chac la xoa khum :>")
-//                            .setNegativeButton("Cancel", (dialoginterface, i) -> dialoginterface.cancel())
-//                            .setPositiveButton("Ok", (dialoginterface, i) -> {
-//                                intent2.putExtra(DATABASE_KEY_USER_ID, value.get_ID());
-//                                intent2.setAction(ACTION_REMOVE_KEY_REMOVEUSER);
-//                                requireActivity().startService(intent2);
-//                                requireActivity().startService(intent);
-//                                dialoginterface.cancel();
-//                            }).show();
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(requireContext());
+                    dialog.setTitle("Hello")
+                            .setMessage("co chac la xoa khum :>")
+                            .setNegativeButton("Cancel", (dialoginterface, i) -> dialoginterface.cancel())
+                            .setPositiveButton("Ok", (dialoginterface, i) -> {
+                                intent2.putExtra(DATABASE_KEY_COURSE_ID, value.get_ID());
+                                intent2.setAction(ACTION_REMOVE_KEY_REMOVECOURSE);
+                                requireActivity().startService(intent2);
+                                requireActivity().startService(intent);
+                                dialoginterface.cancel();
+                            }).show();
 
                     break;
             }
@@ -137,6 +140,7 @@ public class AdminCourseManager extends Fragment {
             if (resultCode == RESULT_OK) {
                 String action = intent.getStringExtra(SERVICE_ACTION);
                 switch (action) {
+                    case ACTION_REMOVE_KEY_REMOVECOURSE:
                     case SERVICE_GETALLCOURSE_NAME:
                         new ProcessInBackground(intent).execute();
                         break;

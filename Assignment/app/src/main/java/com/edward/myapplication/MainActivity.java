@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.Menu;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
+import com.edward.myapplication.databinding.ActivityMainBinding;
 import com.edward.myapplication.ui.course.CourseFragment;
 import com.edward.myapplication.ui.admin.AdminFragment;
 import com.edward.myapplication.ui.maps.MapsFragment;
@@ -32,9 +34,15 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private NavigationView navigationView;
     private View view;
-    private int role = 0;
     private static final float END_SCALE = 0.7f;
+    private final String ROLE = "role";
+    private int role ;
+    private final int ROLE_ADMIN = 0;
+    private final int ROLE_USER= 1;
+    private  final  String  USERNAME = "username";
+    private String username = "";
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,9 +50,11 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        com.edward.myapplication.databinding.ActivityMainBinding binding = com.edward.myapplication.databinding.ActivityMainBinding.inflate(getLayoutInflater());
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        role = Integer.parseInt(String.valueOf(getIntent().getIntExtra(ROLE,-1)));
+        username = getIntent().getStringExtra(USERNAME);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
 
         //custom drawer view
@@ -64,12 +74,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (role == 0 ){ //set startDestination if role admin
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = headerView.findViewById(R.id.userName);
+        TextView navTextView = headerView.findViewById(R.id.textView);
+        navUsername.setText(username);
+        navTextView.setText("Hello "+ username+", how are u today ?");
+
+        if (role == ROLE_ADMIN ){ //set startDestination if role admin
             NavOptions options = new NavOptions.Builder()
                     .setPopUpTo(R.id.nav_course, true)
                     .build();
             navController.navigate(R.id.roleSwitch, savedInstanceState, options);
             navigationView.getMenu().getItem(0).setTitle("Admin");
+            navigationView.getMenu().getItem(0).setIcon(R.drawable.admin);
         }
 
         navigationView.getMenu().getItem(0).setChecked(true);

@@ -35,5 +35,10 @@
         android:name="com.edward.myapplication.ui.admin.AdminFragment"
         android:label="fragment_admin2"
         tools:layout="@layout/fragment_admin" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.edward.myapplication.ui.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
 
 </navigation>

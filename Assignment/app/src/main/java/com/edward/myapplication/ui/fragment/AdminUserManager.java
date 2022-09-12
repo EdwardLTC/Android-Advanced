@@ -10,6 +10,7 @@ import static com.edward.myapplication.config.CONFIG.INTENT_GETALLCOURSE_ACTION;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETALLCOURSE_KEY_ALLCOURSE;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETALLCOURSE_KEY_REGISTERED;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETALLUSER_ACTION;
+import static com.edward.myapplication.config.CONFIG.INTENT_GETALLUSER_KEY_USERLIST;
 import static com.edward.myapplication.config.CONFIG.INTENT_GETREGISTERINFO_KEY_REGISTINFO;
 import static com.edward.myapplication.config.CONFIG.INTENT_REMOVE_ACTION;
 import static com.edward.myapplication.config.CONFIG.RSS_LINK;
@@ -195,9 +196,10 @@ public class AdminUserManager extends Fragment {
         @Override
         protected Exception doInBackground(Integer... integers) {
             listUser.clear();
-            if (intent.getSerializableExtra(INTENT_GETREGISTERINFO_KEY_REGISTINFO) != null) {
-                listUser.addAll((ArrayList<User>) intent.getSerializableExtra(INTENT_GETREGISTERINFO_KEY_REGISTINFO));
+            if (intent.getSerializableExtra(INTENT_GETALLUSER_KEY_USERLIST) != null) {
+                listUser.addAll((ArrayList<User>) intent.getSerializableExtra(INTENT_GETALLUSER_KEY_USERLIST));
             }
+
             return exception;
         }
 

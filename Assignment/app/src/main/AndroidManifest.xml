@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--suppress AndroidDomInspection -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.edward.myapplication">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -18,12 +17,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBQecXneWK88FpB8cVJHJ_RlgKCf3ynxH8"/>
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
         <activity
             android:name=".MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MyApplication.NoActionBar">
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBQecXneWK88FpB8cVJHJ_RlgKCf3ynxH8" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name=".LoginActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.MyApplication.NoActionBar">
@@ -33,20 +41,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
-           android:name="androidx.core.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="com.edward.myapplication.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/paths"/>
+                android:resource="@xml/paths" />
         </provider>
-        <service android:name=".service.GetAllCourseServices"/>
-        <service android:name=".service.HandleCourseService"/>
-        <service android:name=".service.GetAllUserService"/>
-        <service android:name=".service.GetAllRegisterInfo"/>
-        <service android:name=".service.HandleRemoveUserCourse"/>
+
+        <service android:name=".service.GetAllCourseServices" />
+        <service android:name=".service.HandleCourseService" />
+        <service android:name=".service.GetAllUserService" />
+        <service android:name=".service.GetAllRegisterInfo" />
+        <service android:name=".service.HandleRemoveUserCourse" />
     </application>
 
 </manifest>

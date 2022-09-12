@@ -50,7 +50,7 @@ public class CONFIG {
     public static final String INTENT_GETALLUSER_ACTION ="GetAllUser";
 
     //Service Get all Register Info
-    public static final String INTENT_GETREGISTERINFO_KEY_REGISTINFO = "GetAllUserList";
+    public static final String INTENT_GETREGISTERINFO_KEY_REGISTINFO = "GetAllUserListRegis";
     public static final String SERVICE_GETREGISTERINFO_NAME = "GetAllUserService";
     public static final String INTENT_GETREGISTERINFO_ACTION ="GetAllUser";
 
