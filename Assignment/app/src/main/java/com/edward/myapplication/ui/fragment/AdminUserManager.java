@@ -160,19 +160,22 @@ public class AdminUserManager extends Fragment {
         @SuppressLint("NotifyDataSetChanged")
         @Override
         public void onReceive(Context context, Intent intent) {
-            int resultCode = intent.getIntExtra(SERVICE_RESULT, RESULT_CANCELED);
-            if (resultCode == RESULT_OK) {
-                String action = intent.getStringExtra(SERVICE_ACTION);
-                switch (action) {
-                    case ACTION_REMOVE_KEY_REMOVEUSER:
-                    case SERVICE_GETALLUSER_NAME:
-                        new ProcessInBackground(intent).execute();
-                        break;
-                    default:
-                        break;
+            try {
+                int resultCode = intent.getIntExtra(SERVICE_RESULT, RESULT_CANCELED);
+                if (resultCode == RESULT_OK) {
+                    String action = intent.getStringExtra(SERVICE_ACTION);
+                    switch (action) {
+                        case ACTION_REMOVE_KEY_REMOVEUSER:
+                        case SERVICE_GETALLUSER_NAME:
+                            new ProcessInBackground(intent).execute();
+                            break;
+                        default:
+                            break;
+                    }
                 }
+            }catch (Exception e){
+                e.printStackTrace();
             }
-
         }
     };
 

@@ -1,6 +1,9 @@
 package com.edward.myapplication.dao;
 
 import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_COURSE_ID;
+import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_COURSE_NAME;
+import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_COURSE_SCHEDULE;
+import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_COURSE_TESTSCHEDULE;
 import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_REGISTER_ID;
 import static com.edward.myapplication.config.CONFIG.DATABASE_KEY_USER_ID;
 import static com.edward.myapplication.config.CONFIG.DATABASE_TABLE_COURSE;
@@ -90,13 +93,13 @@ public class DataAccessObject extends CourseManagementDB {
         return list;
     }
 
-    public boolean handleRemoveUser(String _userId){
+    public boolean handleRemoveUser(String _userId) {
         SQLiteDatabase sqLiteDatabase = courseManagementDB.getWritableDatabase();
         long i = sqLiteDatabase.delete(DATABASE_TABLE_USER, DATABASE_KEY_USER_ID + "=?", new String[]{_userId});
         return i != -1;
     }
 
-    public boolean handleRemoveCourse(int _courseId){
+    public boolean handleRemoveCourse(int _courseId) {
         SQLiteDatabase sqLiteDatabase = courseManagementDB.getWritableDatabase();
         long i = sqLiteDatabase.delete(DATABASE_TABLE_COURSE, DATABASE_KEY_COURSE_ID + "=?", new String[]{String.valueOf(_courseId)});
         return i != -1;
@@ -116,5 +119,16 @@ public class DataAccessObject extends CourseManagementDB {
         return list;
     }
 
+    public boolean handleAddCourse(Course course) {
+        SQLiteDatabase sqLiteDatabase = courseManagementDB.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DATABASE_KEY_COURSE_ID, course.get_ID());
+        contentValues.put(DATABASE_KEY_COURSE_NAME, course.get_Name());
+        contentValues.put(DATABASE_KEY_COURSE_SCHEDULE, course.get_Schedule());
+        contentValues.put(DATABASE_KEY_COURSE_TESTSCHEDULE, course.get_testSchedule());
+        long i = sqLiteDatabase.insert(DATABASE_TABLE_COURSE, null, contentValues);
+
+        return i != -1;
+    }
 
 }

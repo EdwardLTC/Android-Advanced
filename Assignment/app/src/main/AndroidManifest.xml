@@ -57,6 +57,7 @@
         <service android:name=".service.GetAllUserService" />
         <service android:name=".service.GetAllRegisterInfo" />
         <service android:name=".service.HandleRemoveUserCourse" />
+        <service android:name=".service.HandleAddCourse" />
     </application>
 
 </manifest>

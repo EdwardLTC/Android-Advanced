@@ -76,18 +76,23 @@ public class ListCourseFragment extends Fragment {
         @SuppressLint("NotifyDataSetChanged")
         @Override
         public void onReceive(Context context, Intent intent) {
-            int resultCode = intent.getIntExtra(SERVICE_RESULT, RESULT_CANCELED);
-            if (resultCode == RESULT_OK) {
-                String action = intent.getStringExtra(SERVICE_ACTION);
-                switch (action) {
-                    case SERVICE_HANDLE_NAME:
-                    case SERVICE_GETALLCOURSE_NAME:
-                        new ProcessInBackground(intent).execute();
-                        break;
-                    default:
-                        break;
+            try {
+                int resultCode = intent.getIntExtra(SERVICE_RESULT, RESULT_CANCELED);
+                if (resultCode == RESULT_OK) {
+                    String action = intent.getStringExtra(SERVICE_ACTION);
+                    switch (action) {
+                        case SERVICE_HANDLE_NAME:
+                        case SERVICE_GETALLCOURSE_NAME:
+                            new ProcessInBackground(intent).execute();
+                            break;
+                        default:
+                            break;
+                    }
                 }
+            }catch (Exception e){
+                e.printStackTrace();
             }
+
         }
     };
 

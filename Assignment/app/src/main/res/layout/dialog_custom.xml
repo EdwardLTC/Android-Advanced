@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+    <EditText
+        android:id="@+id/courseId"
+        android:textAlignment="center"
+        android:textSize="23sp"
+        android:hint="course id"
+        android:layout_width="320dp"
+        android:layout_height="60dp"/>
+
+    <EditText
+        android:id="@+id/courseName"
+        android:layout_marginTop="20dp"
+        android:textAlignment="center"
+        android:textSize="23sp"
+        android:hint="course name"
+        android:layout_width="320dp"
+        android:layout_height="60dp"/>
+
+    <EditText
+        android:id="@+id/Schedule"
+        android:layout_marginTop="20dp"
+        android:textAlignment="center"
+        android:textSize="23sp"
+        android:hint="Schedule"
+        android:layout_width="320dp"
+        android:layout_height="60dp"/>
+
+    <EditText
+        android:id="@+id/TestSchedule"
+        android:layout_marginTop="20dp"
+        android:textAlignment="center"
+        android:textSize="23sp"
+        android:hint="Text Schedule"
+        android:layout_width="320dp"
+        android:layout_height="60dp"/>
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_marginTop="20dp"
+        android:text="submit"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

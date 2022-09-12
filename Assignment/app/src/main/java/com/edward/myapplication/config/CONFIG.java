@@ -61,6 +61,13 @@ public class CONFIG {
     public static final String ACTION_REMOVE_KEY_REMOVECOURSE ="ResultRemoveCourse";
 
 
+    //service add course
+    public static final String INTENT_ADD_COURSE_ACTION ="AddNewCourse";
+    public static final String SERVICE_ADD_COURSE_NAME = "HandleAddCourse" ;
+    public static final String ACTION_ADD_COURSE = "ActionAddCourse" ;
+    public static final String SERVICE_RESULT_ADD_COURSE = "ActionAddCourse" ;
+
+
     //text
     public static final float MAP_LATITUDE = (float) 10.8529391;
     public static final float MAP_LONGITUDE = (float) 106.6295448;

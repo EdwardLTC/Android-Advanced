@@ -90,6 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                     intent.putExtra(ROLE,1);
                     intent.putExtra(USERNAME,user.get_FullName());
                     startActivity(intent);
+                    finish();
                     return;
             }
         }
@@ -154,4 +155,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(getAllUserReceiver);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("des", "onDestroy: ");
+    }
+
+
 }

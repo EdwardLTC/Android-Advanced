@@ -44,11 +44,13 @@ import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.edward.myapplication.R;
 import com.edward.myapplication.adapter.CourseAdapter;
 import com.edward.myapplication.adapter.CourseAdapterLv;
+import com.edward.myapplication.adapter.DialogCustom;
 import com.edward.myapplication.adapter.UserAdapter;
 import com.edward.myapplication.modal.Course;
 import com.edward.myapplication.modal.User;
 import com.edward.myapplication.service.GetAllCourseServices;
 import com.edward.myapplication.service.GetAllUserService;
+import com.edward.myapplication.service.HandleAddCourse;
 import com.edward.myapplication.service.HandleRemoveUserCourse;
 
 import java.util.ArrayList;
@@ -70,10 +72,11 @@ public class AdminCourseManager extends Fragment {
 
         Intent intent = new Intent(getContext(), GetAllCourseServices.class);
         intent.setAction(SERVICE_GETALLCOURSE_NAME);
-//        intent.putExtra(DATABASE_KEY_USER_ID, "ps01");
         intent.putExtra(SERVICE_GETALLCOURSE_KEY, false);
 
-        Intent intent2 = new Intent(requireContext(), HandleRemoveUserCourse.class);
+        Intent IntentRemoveCourse= new Intent(requireContext(), HandleRemoveUserCourse.class);
+
+
         SwipeMenuCreator creator = menu -> {
             SwipeMenuItem openItem = new SwipeMenuItem(requireContext());
             openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9, 0xCE)));
@@ -116,9 +119,9 @@ public class AdminCourseManager extends Fragment {
                             .setMessage("co chac la xoa khum :>")
                             .setNegativeButton("Cancel", (dialoginterface, i) -> dialoginterface.cancel())
                             .setPositiveButton("Ok", (dialoginterface, i) -> {
-                                intent2.putExtra(DATABASE_KEY_COURSE_ID, value.get_ID());
-                                intent2.setAction(ACTION_REMOVE_KEY_REMOVECOURSE);
-                                requireActivity().startService(intent2);
+                                IntentRemoveCourse.putExtra(DATABASE_KEY_COURSE_ID, value.get_ID());
+                                IntentRemoveCourse.setAction(ACTION_REMOVE_KEY_REMOVECOURSE);
+                                requireActivity().startService(IntentRemoveCourse);
                                 requireActivity().startService(intent);
                                 dialoginterface.cancel();
                             }).show();
@@ -127,7 +130,7 @@ public class AdminCourseManager extends Fragment {
             }
             return false;
         });
-
+        view.findViewById(R.id.fab).setOnClickListener(view1 -> AddNewCourse());
         requireActivity().startService(intent);
         return view;
     }
@@ -136,18 +139,23 @@ public class AdminCourseManager extends Fragment {
         @SuppressLint("NotifyDataSetChanged")
         @Override
         public void onReceive(Context context, Intent intent) {
-            int resultCode = intent.getIntExtra(SERVICE_RESULT, RESULT_CANCELED);
-            if (resultCode == RESULT_OK) {
-                String action = intent.getStringExtra(SERVICE_ACTION);
-                switch (action) {
-                    case ACTION_REMOVE_KEY_REMOVECOURSE:
-                    case SERVICE_GETALLCOURSE_NAME:
-                        new ProcessInBackground(intent).execute();
-                        break;
-                    default:
-                        break;
+            try {
+                int resultCode = intent.getIntExtra(SERVICE_RESULT, RESULT_CANCELED);
+                if (resultCode == RESULT_OK) {
+                    String action = intent.getStringExtra(SERVICE_ACTION);
+                    switch (action) {
+                        case ACTION_REMOVE_KEY_REMOVECOURSE:
+                        case SERVICE_GETALLCOURSE_NAME:
+                            new ProcessInBackground(intent).execute();
+                            break;
+                        default:
+                            break;
+                    }
                 }
+            }catch (Exception e){
+                e.printStackTrace();
             }
+
         }
     };
     @SuppressLint("StaticFieldLeak")
@@ -172,7 +180,6 @@ public class AdminCourseManager extends Fragment {
             listCourse.clear();
             if (intent.getSerializableExtra(INTENT_GETALLCOURSE_KEY_ALLCOURSE) != null) {
                 listCourse.addAll((ArrayList<Course>) intent.getSerializableExtra(INTENT_GETALLCOURSE_KEY_ALLCOURSE));
-                Log.e(String.valueOf(listCourse.size()), "doInBackground: ");
             }
             return exception;
         }
@@ -186,5 +193,11 @@ public class AdminCourseManager extends Fragment {
             courseAdapterLv.notifyDataSetChanged();
             progressDialog.dismiss();
         }
+    }
+
+    public void AddNewCourse(){
+        DialogCustom cdd=new DialogCustom(requireContext());
+        cdd.show();
+
     }
 }
