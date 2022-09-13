@@ -20,5 +20,9 @@
             android:id="@+id/nav_social"
             android:icon="@drawable/social"
             android:title="Social" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/social"
+            android:title="Logout" />
     </group>
 </menu>

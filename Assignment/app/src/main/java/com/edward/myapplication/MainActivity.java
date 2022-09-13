@@ -1,6 +1,8 @@
 package com.edward.myapplication;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +11,7 @@ import android.view.Menu;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.edward.myapplication.databinding.ActivityMainBinding;
 import com.edward.myapplication.ui.course.CourseFragment;
@@ -42,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private final int ROLE_USER= 1;
     private  final  String  USERNAME = "username";
     private String username = "";
+    SharedPreferences shp;
+    SharedPreferences.Editor shpEditor;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -93,6 +98,10 @@ public class MainActivity extends AppCompatActivity {
         navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
+            if (id == R.id.nav_logout){
+                Logout();
+                return true;
+            }
             onSectionAttached(id);
             drawer.closeDrawers();
             return true;
@@ -154,6 +163,23 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.nav_host_fragment_content_main, Objects.requireNonNull(fragment))
                 .addToBackStack(null)
                 .commit();
+    }
+    public void Logout() {
+        try {
+            if (shp == null)
+                shp = getSharedPreferences("myPreferences", MODE_PRIVATE);
+
+            shpEditor = shp.edit();
+            shpEditor.putString("name", "");
+            shpEditor.commit();
+
+            Intent i = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(i);
+            finish();
+
+        } catch (Exception ex) {
+            Toast.makeText(MainActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
 }

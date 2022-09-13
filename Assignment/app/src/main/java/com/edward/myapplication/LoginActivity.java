@@ -19,6 +19,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -46,9 +47,12 @@ public class LoginActivity extends AppCompatActivity {
     // TODO: 9/12/2022
     ArrayList<User> userList = new ArrayList<>();
     private final String ROLE = "role";
-    private  final  String  USERNAME = "username";
+    private final String USERNAME = "username";
     private final int ROLE_ADMIN = 0;
-    private final int ROLE_USER= 1;
+    private final int ROLE_USER = 1;
+    SharedPreferences shp;
+    SharedPreferences.Editor shpEditor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,32 +73,79 @@ public class LoginActivity extends AppCompatActivity {
         Button btnLogin = findViewById(R.id.login);
         EditText user = findViewById(R.id.username);
         EditText pass = findViewById(R.id.password);
+        shp = getSharedPreferences("myPreferences", MODE_PRIVATE);
 
-        btnLogin.setOnClickListener(view -> login(user.getText().toString(), pass.getText().toString()));
+        CheckLogin();
+
+        btnLogin.setOnClickListener(view -> DoLogin(user.getText().toString(), pass.getText().toString()));
     }
 
     private void login(String username, String pass) {
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         if (username.isEmpty() || pass.isEmpty()) {
             Toast.makeText(this, "Username and Pass is Empty", Toast.LENGTH_SHORT).show();
         }
-        if (username.equalsIgnoreCase("admin")&&pass.equalsIgnoreCase("admin")){
-            intent.putExtra(USERNAME,"admin");
-            intent.putExtra(ROLE,ROLE_ADMIN);
+        if (username.equalsIgnoreCase("admin") && pass.equalsIgnoreCase("admin")) {
+            intent.putExtra(USERNAME, "admin");
+            intent.putExtra(ROLE, ROLE_ADMIN);
             startActivity(intent);
             return;
         }
         for (User user : userList) {
             if (user.get_FullName().equalsIgnoreCase(username) && user.get_ID().equalsIgnoreCase(pass)) {
-                    intent.putExtra(DATABASE_KEY_USER_ID,user.get_ID());
-                    intent.putExtra(ROLE,1);
-                    intent.putExtra(USERNAME,user.get_FullName());
-                    startActivity(intent);
-                    finish();
-                    return;
+                intent.putExtra(DATABASE_KEY_USER_ID, user.get_ID());
+                intent.putExtra(ROLE, 1);
+                intent.putExtra(USERNAME, user.get_FullName());
+                startActivity(intent);
+                finish();
+                return;
             }
         }
         Toast.makeText(this, "Login False", Toast.LENGTH_SHORT).show();
+    }
+
+    public void DoLogin(String username, String pass) {
+        try {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            if (username.equalsIgnoreCase("admin") && pass.equalsIgnoreCase("admin")) {
+                intent.putExtra(USERNAME, "admin");
+                intent.putExtra(ROLE, ROLE_ADMIN);
+                shpEditor = shp.edit();
+                shpEditor.putString("name", username);
+                shpEditor.commit();
+                startActivity(intent);
+                return;
+            }
+            for (User user : userList) {
+                if (user.get_FullName().equalsIgnoreCase(username) && user.get_ID().equalsIgnoreCase(pass)) {
+                    intent.putExtra(DATABASE_KEY_USER_ID, user.get_ID());
+                    intent.putExtra(ROLE, 1);
+                    intent.putExtra(USERNAME, user.get_FullName());
+                    shpEditor = shp.edit();
+                    shpEditor.putString("name", username);
+                    shpEditor.commit();
+                    startActivity(intent);
+                    finish();
+                    return;
+                }
+            }
+            Toast.makeText(this, "Login False", Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void CheckLogin() {
+        if (shp == null)
+            shp = getSharedPreferences("myPreferences", MODE_PRIVATE);
+
+        String userName = shp.getString("name", "");
+
+        if (userName != null && !userName.equals("")) {
+            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(i);
+            finish();
+        }
     }
 
     private final BroadcastReceiver getAllUserReceiver = new BroadcastReceiver() {
