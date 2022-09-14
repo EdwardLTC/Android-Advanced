@@ -27,7 +27,6 @@ public class MusicService extends Service {
     private MediaPlayer mediaPlayer;
 
     private static final String CHANNEL_ID = "MyChannel";
-    private static final String CHANNEL_NAME = "Channel Service";
     private static final int ACTION_PAUSE = 1;
     private static final int ACTION_RESUME = 2;
     private static final int ACTION_CLEAR = 3;
