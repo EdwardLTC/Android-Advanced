@@ -12,7 +12,8 @@ import com.edward.lab1.R;
 
 public class BackGroundService extends Service {
     private static final String TAG = "BackGroundService";
-    private MediaPlayer mediaPlayer;
+    public MediaPlayer mediaPlayer;
+    private boolean isPlaying;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -21,10 +22,14 @@ public class BackGroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.e(TAG, "onStartCommand: " );
         if (mediaPlayer == null){
             mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.song_new);
         }
         mediaPlayer.start();
+        isPlaying = true;
+        int action = intent.getIntExtra("Action_Music",0);
+        HandleMusic(action);
         return START_NOT_STICKY;
     }
 
@@ -33,13 +38,25 @@ public class BackGroundService extends Service {
         super.onCreate();
         Log.e(TAG, "onCreate: " );
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-//        if (mediaPlayer!=null){
-//            mediaPlayer.release();
-//            mediaPlayer = null;
-//        }
+    private void HandleMusic(int action) {
+        switch (action) {
+            case 1:
+                if (mediaPlayer != null && isPlaying) {
+                    mediaPlayer.pause();
+                    isPlaying = false;
+                }
+                break;
+            case 2:
+                if (mediaPlayer != null && !isPlaying) {
+                    mediaPlayer.start();
+                    isPlaying = true;
+                }
+                break;
+            case 3:
+                stopSelf();
+                break;
+        }
     }
+
+
 }

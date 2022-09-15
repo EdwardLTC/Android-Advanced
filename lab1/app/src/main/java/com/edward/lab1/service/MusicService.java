@@ -41,6 +41,7 @@ public class MusicService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.e("test", "onStartCommand: ");
         Bundle bundle = intent.getExtras();
 
         if (bundle != null) {

@@ -31,12 +31,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtras(bundle);
             startService(intent);
         });
-        findViewById(R.id.destroy).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                stopService(intent);
-            }
-        });
+        findViewById(R.id.destroy).setOnClickListener(view -> stopService(intent));
     }
 
     private void InitChannelNotification() {
