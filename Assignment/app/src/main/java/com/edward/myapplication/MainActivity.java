@@ -21,6 +21,7 @@ import com.edward.myapplication.ui.news.NewsFragment;
 import com.edward.myapplication.ui.social.SocialFragment;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
@@ -33,7 +34,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Thread.UncaughtExceptionHandler{
 
     private AppBarConfiguration mAppBarConfiguration;
     private NavigationView navigationView;
@@ -182,4 +183,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    public void uncaughtException(@NonNull Thread thread, @NonNull Throwable throwable) {
+        Toast.makeText(this,throwable.toString(),Toast.LENGTH_LONG).show();
+    }
 }
