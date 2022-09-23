@@ -15,5 +15,4 @@ public class MyBroadcast extends BroadcastReceiver {
         intent1.putExtra("Action_Music",action);
         context.startService(intent1);
     }
-
 }
