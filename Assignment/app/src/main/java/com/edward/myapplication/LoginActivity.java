@@ -10,10 +10,15 @@ import static com.edward.myapplication.config.CONFIG.SERVICE_ACTION;
 import static com.edward.myapplication.config.CONFIG.SERVICE_GETALLUSER_NAME;
 import static com.edward.myapplication.config.CONFIG.SERVICE_RESULT;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -38,6 +43,13 @@ import com.edward.myapplication.adapter.UserAdapter;
 import com.edward.myapplication.modal.User;
 import com.edward.myapplication.service.GetAllUserService;
 import com.edward.myapplication.ui.fragment.AdminUserManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
@@ -63,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
+        LoginGoogle();
         IntentFilter filterGetAllUser = new IntentFilter(INTENT_GETALLUSER_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(getAllUserReceiver, filterGetAllUser);
 
@@ -78,30 +91,6 @@ public class LoginActivity extends AppCompatActivity {
         CheckLogin();
 
         btnLogin.setOnClickListener(view -> DoLogin(user.getText().toString(), pass.getText().toString()));
-    }
-
-    private void login(String username, String pass) {
-        Intent intent = new Intent(this, MainActivity.class);
-        if (username.isEmpty() || pass.isEmpty()) {
-            Toast.makeText(this, "Username and Pass is Empty", Toast.LENGTH_SHORT).show();
-        }
-        if (username.equalsIgnoreCase("admin") && pass.equalsIgnoreCase("admin")) {
-            intent.putExtra(USERNAME, "admin");
-            intent.putExtra(ROLE, ROLE_ADMIN);
-            startActivity(intent);
-            return;
-        }
-        for (User user : userList) {
-            if (user.get_FullName().equalsIgnoreCase(username) && user.get_ID().equalsIgnoreCase(pass)) {
-                intent.putExtra(DATABASE_KEY_USER_ID, user.get_ID());
-                intent.putExtra(ROLE, 1);
-                intent.putExtra(USERNAME, user.get_FullName());
-                startActivity(intent);
-                finish();
-                return;
-            }
-        }
-        Toast.makeText(this, "Login False", Toast.LENGTH_SHORT).show();
     }
 
     public void DoLogin(String username, String pass) {
@@ -130,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
             Toast.makeText(this, "Login False", Toast.LENGTH_SHORT).show();
-        }catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
@@ -201,17 +190,48 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     public void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(getAllUserReceiver);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("des", "onDestroy: ");
+
+    private void LoginGoogle() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_STANDARD);
+
+        findViewById(R.id.sign_in_button).setOnClickListener(view -> {
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            checkLogin.launch(signInIntent);
+        });
+
     }
+
+    ActivityResultLauncher<Intent> checkLogin = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                    try {
+                        GoogleSignInAccount account = task.getResult(ApiException.class);
+                        String displayName = account.getDisplayName();
+                        String email = account.getEmail();
+                        Toast.makeText(LoginActivity.this, "Đăng nhập thành công - " + displayName + " - " + email, Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                        finish();
+                    } catch (ApiException e) {
+                        e.printStackTrace();
+                        Toast.makeText(LoginActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 
 
 }

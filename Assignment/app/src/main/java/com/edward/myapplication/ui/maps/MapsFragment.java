@@ -51,7 +51,9 @@ public class MapsFragment extends Fragment {
         mMapView = binding.mapView;
 
         mMapView.onCreate(savedInstanceState);
-
+        if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 999);
+        }
         mMapView.getMapAsync(mMap -> {
 
             googleMap = mMap;
@@ -64,9 +66,11 @@ public class MapsFragment extends Fragment {
 
             if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 999);
+            } else {
+                googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+                googleMap.setMyLocationEnabled(true);
             }
-            googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-            googleMap.setMyLocationEnabled(true);
+
         });
 
         return root;

@@ -47,7 +47,7 @@ public class NewsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = FragmentNewsBinding.inflate(inflater,container,false);
+        binding = FragmentNewsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         titles = new ArrayList<>();
@@ -117,8 +117,8 @@ public class NewsFragment extends Fragment {
                             if (insideItem) {
                                 link.add(xpp.nextText());
                             }
-                        } else if (xpp.getName().equalsIgnoreCase("pubdate")){
-                            if (insideItem){
+                        } else if (xpp.getName().equalsIgnoreCase("pubdate")) {
+                            if (insideItem) {
                                 date.add(xpp.nextText());
                             }
                         }
@@ -141,19 +141,19 @@ public class NewsFragment extends Fragment {
             super.onPostExecute(s);
 
             for (int i = 0; i < titles.size(); i++) {
-                rss.add(new RSS(titles.get(i),description.get(i)));
+                rss.add(new RSS(titles.get(i), description.get(i)));
             }
-            RSSAdapter rssAdapter = new RSSAdapter(requireContext(),rss);
+            RSSAdapter rssAdapter = new RSSAdapter(requireContext(), rss);
             lvData.setAdapter(rssAdapter);
             progressDialog.dismiss();
         }
     }
 
-    private String getDescription(String input){
+    private String getDescription(String input) {
         StringBuilder stringBuilder = new StringBuilder();
         int check = input.lastIndexOf("br>");
         for (int j = check; j < input.length(); j++) {
-            if (j>= input.lastIndexOf(check)&& j<=check+2 ){
+            if (j >= input.lastIndexOf(check) && j <= check + 2) {
                 continue;
             }
             stringBuilder.append(input.charAt(j));
