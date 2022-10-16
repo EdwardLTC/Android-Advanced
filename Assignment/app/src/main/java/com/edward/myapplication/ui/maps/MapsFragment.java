@@ -50,29 +50,30 @@ public class MapsFragment extends Fragment {
         View root = binding.getRoot();
         mMapView = binding.mapView;
 
-        mMapView.onCreate(savedInstanceState);
-        if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 999);
+        }else {
+            mMapView.onCreate(savedInstanceState);
+            mMapView.getMapAsync(mMap -> {
+
+                googleMap = mMap;
+
+                LatLng FPT = new LatLng(MAP_LATITUDE, MAP_LONGITUDE);
+                googleMap.addMarker(new MarkerOptions().position(FPT).title(MAP_TITLE).snippet(MAP_CONTENT));
+
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(FPT).zoom(18).build();
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 999);
+                } else {
+                    googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+                    googleMap.setMyLocationEnabled(true);
+                }
+
+            });
         }
-        mMapView.getMapAsync(mMap -> {
-
-            googleMap = mMap;
-
-            LatLng FPT = new LatLng(MAP_LATITUDE, MAP_LONGITUDE);
-            googleMap.addMarker(new MarkerOptions().position(FPT).title(MAP_TITLE).snippet(MAP_CONTENT));
-
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(FPT).zoom(18).build();
-            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 999);
-            } else {
-                googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-                googleMap.setMyLocationEnabled(true);
-            }
-
-        });
-
         return root;
     }
 

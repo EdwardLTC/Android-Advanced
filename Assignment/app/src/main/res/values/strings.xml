@@ -12,8 +12,6 @@
     <string name="menu_slideshow">Slideshow</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="facebook_app_id">515349813929352</string>
-    <string name="facebook_login_protocol_cheme">fb515349813929352</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -24,4 +22,7 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="sign_up">Sign Up</string>
+
+    <string name="facebook_app_id">515349813929352</string>
+    <string name="facebook_client_token">a7a2dd5b6d84190b7f9c79ddfc4c4d9b</string>
 </resources>

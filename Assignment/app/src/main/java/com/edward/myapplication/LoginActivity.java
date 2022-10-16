@@ -43,6 +43,12 @@ import com.edward.myapplication.adapter.UserAdapter;
 import com.edward.myapplication.modal.User;
 import com.edward.myapplication.service.GetAllUserService;
 import com.edward.myapplication.ui.fragment.AdminUserManager;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -64,6 +70,8 @@ public class LoginActivity extends AppCompatActivity {
     private final int ROLE_USER = 1;
     SharedPreferences shp;
     SharedPreferences.Editor shpEditor;
+    private LoginButton mBtnLoginFacebook;
+    private CallbackManager mCallbackManager;
 
 
     @Override
@@ -74,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_login);
-
+        LoginFaceBook();
         LoginGoogle();
         IntentFilter filterGetAllUser = new IntentFilter(INTENT_GETALLUSER_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(getAllUserReceiver, filterGetAllUser);
@@ -209,29 +217,48 @@ public class LoginActivity extends AppCompatActivity {
 
         findViewById(R.id.sign_in_button).setOnClickListener(view -> {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-            checkLogin.launch(signInIntent);
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                            try {
+                                GoogleSignInAccount account = task.getResult(ApiException.class);
+                                String displayName = account.getDisplayName();
+                                String email = account.getEmail();
+                                Toast.makeText(LoginActivity.this, "Đăng nhập thành công - " + displayName + " - " + email, Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                finish();
+                            } catch (ApiException e) {
+                                e.printStackTrace();
+                                Toast.makeText(LoginActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }).launch(signInIntent);
         });
 
     }
 
-    ActivityResultLauncher<Intent> checkLogin = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
-                    try {
-                        GoogleSignInAccount account = task.getResult(ApiException.class);
-                        String displayName = account.getDisplayName();
-                        String email = account.getEmail();
-                        Toast.makeText(LoginActivity.this, "Đăng nhập thành công - " + displayName + " - " + email, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                        finish();
-                    } catch (ApiException e) {
-                        e.printStackTrace();
-                        Toast.makeText(LoginActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+    public void LoginFaceBook() {
+        mCallbackManager = CallbackManager.Factory.create();
+        mBtnLoginFacebook = findViewById(R.id.btn_login_facebook);
+        mBtnLoginFacebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Toast.makeText(LoginActivity.this, "Đăng nhập thành công - " + loginResult.toString(), Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            }
 
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+                Toast.makeText(LoginActivity.this, "Đăng nhập thành công - " + e.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 }
