@@ -48,7 +48,7 @@ public class Bai02Activity extends AppCompatActivity {
                 ds.add(url + " - " + title + " - ");
             } while (c.moveToNext());
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Bai02Activity.this, android.R.layout.simple_list_item_1, ds);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(Bai02Activity.this, android.R.layout.simple_list_item_1, ds);
         listView.setAdapter(adapter);
     }
 }

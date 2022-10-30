@@ -1,80 +1,49 @@
 package com.edward.myapplication;
 
-import static com.edward.myapplication.ServiceAPI.Base_Service;
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.res.AssetFileDescriptor;
-import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.edward.myapplication.adapter.DialogCallback;
+import com.edward.myapplication.adapter.DialogCustom;
+import com.edward.myapplication.adapter.RCAdapter;
+import com.edward.myapplication.adapter.RecycleCallBack;
+import com.edward.myapplication.dao.DataAccessObject;
+import com.edward.myapplication.databinding.ActivityMainBinding;
+import com.edward.myapplication.models.User;
 
-import java.io.IOException;
+public class MainActivity extends AppCompatActivity implements RecycleCallBack {
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
-public class MainActivity extends AppCompatActivity {
-    private MediaPlayer mediaPlayer;
+    private RCAdapter adapter;
+    private MainViewModel accountViewModel;
+    private DataAccessObject dataAccessObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        DemoCallAPI();
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        RecyclerView recyclerView = binding.rcv;
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+
+        dataAccessObject = new DataAccessObject(this);
+        accountViewModel = new MainViewModel(this);
+
+        accountViewModel.getListMutableLiveData().observe(this, users -> {
+            adapter = new RCAdapter(MainActivity.this, users,this);
+            recyclerView.setAdapter(adapter);
+        });
+
 
     }
 
-    private void playAudio(String url) throws Exception {
-        killMediaPlayer();
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setDataSource(url);
-        mediaPlayer.prepare();
-        mediaPlayer.start();
-    }
-
-    private void killMediaPlayer() {
-        if (mediaPlayer != null) {
-            try {
-                mediaPlayer.release();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    @Override
+    public void onClickComputer(User user) {
 
     }
-
-    private void DemoCallAPI() {
-
-        ServiceAPI requestInterface = new Retrofit.Builder()
-                .baseUrl(Base_Service)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build().create(ServiceAPI.class);
-
-        new CompositeDisposable().add(requestInterface.getAPI("ILrQX0doYOHT7nL3aoVt0A8thkeeQgaU", "con ga")
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, this::handleError)
-        );
-    }
-
-    private void handleResponse(Test test) {
-        try {
-            playAudio(test.getAsync());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //khi gọi API THÀNH CÔNG thì thực hiện xử lý ở đây
-    }
-
-    private void handleError(Throwable error) {
-        String a = "";
-        //khi gọi API KHÔNG THÀNH CÔNG thì thực hiện xử lý ở đây
-    }
-
 }

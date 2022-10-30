@@ -1,5 +1,6 @@
 package com.edward.lab3;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,13 +43,7 @@ public class Bai01Activity extends AppCompatActivity {
                     builder.setTitle("Contacts access needed");
                     builder.setPositiveButton(android.R.string.ok, null);
                     builder.setMessage("please confirm Contacts access");
-                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @TargetApi(Build.VERSION_CODES.M)
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, 7979);
-                        }
-                    });
+                    builder.setOnDismissListener(dialog -> requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, 7979));
                     builder.show();
 
                 } else {
@@ -67,6 +62,7 @@ public class Bai01Activity extends AppCompatActivity {
     void getContact() {
         ContentResolver ctr = getContentResolver();
 
+        @SuppressLint("Recycle")
         Cursor c = ctr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
         Log.e(String.valueOf(c.getCount()), "getContact: " );
         if (c.getCount()<1){
@@ -95,7 +91,7 @@ public class Bai01Activity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 7979) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
